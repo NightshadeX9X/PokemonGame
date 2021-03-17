@@ -1,0 +1,26 @@
+{
+	"name": "TS-GameDev-Browser-Setup",
+	"version": "1.0.0",
+	"description": "",
+	"main": "js/app.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/NightshadeX9X/TS-GameDev-Browser-Setup.git"
+	},
+	"type": "module",
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/NightshadeX9X/TS-GameDev-Browser-Setup/issues"
+	},
+	"homepage": "https://github.com/NightshadeX9X/TS-GameDev-Browser-Setup#readme",
+	"dependencies": {
+		"@types/express": "^4.17.11",
+		"@types/node": "^14.14.35",
+		"express": "^4.17.1"
+	}
+}
