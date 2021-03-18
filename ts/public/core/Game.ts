@@ -1,4 +1,4 @@
-import BlackScreenState from "../states/BlackScreenState.js";
+import BlackScreenState from "../states/RoamState.js";
 import { Preloadable, Updatable, Renderable } from "./Attributes.js";
 import Input from "./Input.js";
 import Loader from "./Loader.js";
