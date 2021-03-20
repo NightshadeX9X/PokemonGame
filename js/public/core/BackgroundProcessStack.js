@@ -40,54 +40,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import State from "../core/State.js";
-import Player from "../roam_state/Player.js";
 import { ChildOf } from "../util/functions.js";
-var RoamState = /** @class */ (function () {
-    function RoamState(stateStack) {
-        this.stateStack = stateStack;
-        this.tileSize = 16;
-        this.player = new Player(this);
-        this.colorToneMaxAlpha = 0.4;
-        /** The color tone overlay displayed on top of the Camera display. The color varies depending on the hour
-         * This list provides all the color tones using an array, from hour 0 (00:00) to hour 23 (23:00)
-         * The current time is rounded to the nearest hour, and that index of the this array is the color tone to draw.
-         * Color tones should only be rendered in outdoor maps.
-         * Format: [Red, Green, Blue, Alpha]
-        */
-        this.colorTones = [
-            [0, 0, 255, this.colorToneMaxAlpha],
-            [0, 0, 255, this.colorToneMaxAlpha * 0.8],
-            [0, 0, 255, this.colorToneMaxAlpha * 0.6],
-            [0, 0, 255, this.colorToneMaxAlpha * 0.4],
-            [0, 0, 255, this.colorToneMaxAlpha * 0.2],
-            [0, 0, 255, 0],
-            [255, 255, 0, 0],
-            [255, 255, 0, this.colorToneMaxAlpha * 0.2],
-            [255, 255, 0, this.colorToneMaxAlpha * 0.4],
-            [255, 255, 0, this.colorToneMaxAlpha * 0.6],
-            [255, 255, 0, this.colorToneMaxAlpha * 0.8],
-            [255, 255, 0, this.colorToneMaxAlpha],
-            [255, 255, 0, this.colorToneMaxAlpha],
-            [255, 255, 0, this.colorToneMaxAlpha * 0.8],
-            [255, 255, 0, this.colorToneMaxAlpha * 0.6],
-            [255, 255, 0, this.colorToneMaxAlpha * 0.4],
-            [255, 255, 0, this.colorToneMaxAlpha * 0.2],
-            [255, 255, 0, 0],
-            [0, 0, 255, 0],
-            [0, 0, 255, this.colorToneMaxAlpha * 0.2],
-            [0, 0, 255, this.colorToneMaxAlpha * 0.4],
-            [0, 0, 255, this.colorToneMaxAlpha * 0.6],
-            [0, 0, 255, this.colorToneMaxAlpha * 0.8],
-            [0, 0, 255, this.colorToneMaxAlpha],
-        ];
-        State.call(this, stateStack);
+import StateStack from "./StateStack.js";
+var BackgroundProcessStack = /** @class */ (function () {
+    function BackgroundProcessStack(parent, game) {
+        StateStack.call(this, parent, game);
     }
-    RoamState.prototype.preload = function (loader) {
+    BackgroundProcessStack.prototype.insert = function (state, index) {
+        if (index === void 0) { index = 0; }
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.player.preload(loader)];
+                    case 0:
+                        state.toUpdate = true;
+                        state.blocking = false;
+                        return [4 /*yield*/, StateStack.prototype.insert.call(this, state, index)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -95,19 +62,9 @@ var RoamState = /** @class */ (function () {
             });
         });
     };
-    RoamState.prototype.update = function (input) {
-        this.player.update(input);
-        this.subStateStack.update(input);
-        this.backgroundProcesses.update(input);
-    };
-    RoamState.prototype.render = function (ctx) {
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        this.player.render(ctx);
-        State.prototype.render.call(this, ctx);
-    };
-    RoamState = __decorate([
-        ChildOf(State)
-    ], RoamState);
-    return RoamState;
+    BackgroundProcessStack = __decorate([
+        ChildOf(StateStack)
+    ], BackgroundProcessStack);
+    return BackgroundProcessStack;
 }());
-export default RoamState;
+export default BackgroundProcessStack;

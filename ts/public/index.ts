@@ -22,6 +22,6 @@ async function setup() {
 	render();
 }
 
-window.onload = () => {
-	setup();
+window.onload = async () => {
+	await setup();
 }

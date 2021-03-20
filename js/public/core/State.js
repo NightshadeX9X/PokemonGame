@@ -35,6 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import Events from "../util/Events.js";
+import BackgroundProcessStack from "./BackgroundProcessStack.js";
 import StateStack from "./StateStack.js";
 var State = /** @class */ (function () {
     function State(stateStack) {
@@ -43,6 +44,7 @@ var State = /** @class */ (function () {
         this.toRender = null;
         this.blocking = true;
         this.subStateStack = new StateStack(this, this.stateStack.game);
+        this.backgroundProcesses = new BackgroundProcessStack(this, this.stateStack.game);
         this.evtHandler = new Events.Handler();
     }
     State.prototype.preload = function (loader) {
@@ -50,25 +52,89 @@ var State = /** @class */ (function () {
             return [2 /*return*/];
         }); });
     };
-    State.prototype.update = function (input) { };
-    State.prototype.render = function (ctx) { };
-    Object.defineProperty(State.prototype, "index", {
-        get: function () { return this.stateStack.states.indexOf(this); },
-        enumerable: false,
-        configurable: true
-    });
+    State.prototype.update = function (input) {
+        this.subStateStack.update(input);
+        this.backgroundProcesses.update(input);
+    };
+    State.prototype.render = function (ctx) {
+        this.subStateStack.render(ctx);
+        this.backgroundProcesses.render(ctx);
+    };
+    State.prototype.getIndex = function () { var _a, _b; return (_b = (_a = this.stateStack) === null || _a === void 0 ? void 0 : _a.states.indexOf(this)) !== null && _b !== void 0 ? _b : -1; };
     State.prototype.remove = function () {
-        this.stateStack.remove(this.index);
+        if (!this.stateStack.states.includes(this))
+            return;
+        this.stateStack.remove(this.getIndex());
     };
     State.prototype.waitForRemoval = function () {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
             return __generator(this, function (_a) {
+                if (!this.stateStack.states.includes(this))
+                    return [2 /*return*/];
                 return [2 /*return*/, new Promise(function (resolve, reject) {
                         _this.evtHandler.addEventListener('remove', function () {
                             resolve();
                         });
                     })];
+            });
+        });
+    };
+    State.prototype.addBackgroundProcess = function (s) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.backgroundProcesses.push(s)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    State.createFunctionRunner = function (stateStack, fn) {
+        var _this = this;
+        var state = new State(stateStack);
+        state.preload = function (loader) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, fn()];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); };
+        return state;
+    };
+    State.runFuncAsState = function (stateStack, fn) {
+        return __awaiter(this, void 0, void 0, function () {
+            var state;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        state = this.createFunctionRunner(stateStack, fn);
+                        return [4 /*yield*/, stateStack.push(state)];
+                    case 1:
+                        _a.sent();
+                        state.remove();
+                        return [2 /*return*/, state];
+                }
+            });
+        });
+    };
+    State.prototype.addAndWaitForRemoval = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.stateStack.push(this)];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, this.waitForRemoval()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
             });
         });
     };

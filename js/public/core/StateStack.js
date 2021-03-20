@@ -73,9 +73,29 @@ var StateStack = /** @class */ (function () {
         });
     };
     StateStack.prototype.remove = function (index) {
-        var state = this.states.splice(index, 1)[0];
+        if (index < 0)
+            return;
+        var state = this.states[index];
+        this.states.splice(index, 1);
         this.evtHandler.dispatchEvent('remove state', state, index);
-        state.evtHandler.dispatchEvent('remove', this, index);
+        state === null || state === void 0 ? void 0 : state.evtHandler.dispatchEvent('remove', this, index);
+    };
+    StateStack.prototype.pop = function () {
+        this.remove(this.states.length - 1);
+    };
+    StateStack.prototype.replace = function (state, index) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.remove(index);
+                        return [4 /*yield*/, this.insert(state, index)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     StateStack.prototype.fromTop = function (n, ignoreNonBlocking) {
         if (n === void 0) { n = 0; }

@@ -34,7 +34,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import BlackScreenState from "../states/BlackScreenState.js";
+import RoamState from "../states/RoamState.js";
+import BackgroundProcessStack from "./BackgroundProcessStack.js";
 import Input from "./Input.js";
 import Loader from "./Loader.js";
 import StateStack from "./StateStack.js";
@@ -45,13 +46,25 @@ var Game = /** @class */ (function () {
         this.cnv = document.getElementById('screen');
         this.ctx = this.cnv.getContext('2d');
         this.subStateStack = new StateStack(this, this);
+        this.backgroundProcesses = new BackgroundProcessStack(this, this);
         this.fps = 60;
+        /* this.subStateStack.evtHandler.addEventListener('insert state', (state: State) => {
+            console.log("inserted", state.constructor.name);
+        }) */
     }
+    Game.prototype.init = function () {
+        this.input.start(document);
+        this.ctx.imageSmoothingEnabled = false;
+        this.cnv.style.imageRendering = "pixelated";
+        this.ctx.scale(2, 2);
+    };
     Game.prototype.preload = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.subStateStack.push(new BlackScreenState(this.subStateStack))];
+                    case 0:
+                        this.init();
+                        return [4 /*yield*/, this.subStateStack.push(new RoamState(this.subStateStack))];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -61,9 +74,11 @@ var Game = /** @class */ (function () {
     };
     Game.prototype.update = function () {
         this.subStateStack.update(this.input);
+        this.backgroundProcesses.update(this.input);
     };
     Game.prototype.render = function () {
         this.subStateStack.render(this.ctx);
+        this.backgroundProcesses.render(this.ctx);
     };
     return Game;
 }());

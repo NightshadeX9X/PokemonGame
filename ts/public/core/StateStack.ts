@@ -27,10 +27,21 @@ class StateStack implements Updatable, Renderable {
 	}
 
 	public remove(index: number) {
-		const [state] = this.states.splice(index, 1);
+		if (index < 0) return;
+		const state = this.states[index];
+		this.states.splice(index, 1);
 
 		this.evtHandler.dispatchEvent('remove state', state, index);
-		state.evtHandler.dispatchEvent('remove', this, index);
+
+		state?.evtHandler.dispatchEvent('remove', this, index);
+	}
+	public pop() {
+		this.remove(this.states.length - 1);
+	}
+
+	public async replace(state: State, index: number) {
+		this.remove(index);
+		await this.insert(state, index);
 	}
 
 	public fromTop(n = 0, ignoreNonBlocking = false) {
