@@ -34,11 +34,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+import Bag from "../items/bag/Bag.js";
 import RoamState from "../states/RoamState.js";
 import BackgroundProcessStack from "./BackgroundProcessStack.js";
 import Input from "./Input.js";
 import Loader from "./Loader.js";
 import StateStack from "./StateStack.js";
+import Item from '../items/Item.js';
 var Game = /** @class */ (function () {
     function Game() {
         this.loader = new Loader();
@@ -48,15 +50,12 @@ var Game = /** @class */ (function () {
         this.subStateStack = new StateStack(this, this);
         this.backgroundProcesses = new BackgroundProcessStack(this, this);
         this.fps = 60;
-        /* this.subStateStack.evtHandler.addEventListener('insert state', (state: State) => {
-            console.log("inserted", state.constructor.name);
-        }) */
+        this.bag = new Bag();
     }
     Game.prototype.init = function () {
         this.input.start(document);
         this.ctx.imageSmoothingEnabled = false;
         this.cnv.style.imageRendering = "pixelated";
-        this.ctx.scale(2, 2);
     };
     Game.prototype.preload = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -64,8 +63,13 @@ var Game = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         this.init();
-                        return [4 /*yield*/, this.subStateStack.push(new RoamState(this.subStateStack))];
+                        return [4 /*yield*/, Promise.all([
+                                Item.loadAll(this.loader)
+                            ])];
                     case 1:
+                        _a.sent();
+                        return [4 /*yield*/, this.subStateStack.push(new RoamState(this.subStateStack))];
+                    case 2:
                         _a.sent();
                         return [2 /*return*/];
                 }

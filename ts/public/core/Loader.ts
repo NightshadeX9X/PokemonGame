@@ -44,7 +44,7 @@ class Loader {
 	}
 
 	public async loadJSDefault<T = any>(path: string) {
-		return await this.loadJSModule<{ default: T }>(path);
+		return (await this.loadJSModule<{ default: T }>(path)).default;
 	}
 }
 

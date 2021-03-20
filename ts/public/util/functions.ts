@@ -58,3 +58,18 @@ export function createCanvas(size: Vector) {
 	cnv.height = size.y;
 	return { cnv, ctx }
 }
+
+export function shuffleArray<T>(array: T[]): T[] {
+	let clone = [...array];
+	let result: T[] = [];
+	while (clone.length) {
+		const index = random(0, clone.length - 1);
+		const [el] = clone.splice(index, 1);
+		result.push(el);
+	}
+	return result;
+}
+
+export function objectKeys<V>(obj: Record<keyof any, V>) {
+	return Object.values(obj) as V[];
+}

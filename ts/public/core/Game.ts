@@ -1,3 +1,4 @@
+import Bag from "../items/bag/Bag.js";
 import DelayState from "../states/DelayState.js";
 import RoamState from "../states/RoamState.js";
 import { Preloadable, Updatable, Renderable } from "./Attributes.js";
@@ -6,6 +7,7 @@ import Input from "./Input.js";
 import Loader from "./Loader.js";
 import State from "./State.js";
 import StateStack from "./StateStack.js";
+import Item from '../items/Item.js';
 
 class Game implements Preloadable, Updatable, Renderable {
 	public loader = new Loader();
@@ -18,21 +20,24 @@ class Game implements Preloadable, Updatable, Renderable {
 
 	public readonly fps = 60;
 
+	public bag = new Bag();
+
 	constructor() {
-		/* this.subStateStack.evtHandler.addEventListener('insert state', (state: State) => {
-			console.log("inserted", state.constructor.name);
-		}) */
+
 	}
 
 	private init() {
 		this.input.start(document);
 		this.ctx.imageSmoothingEnabled = false;
 		this.cnv.style.imageRendering = "pixelated";
-		this.ctx.scale(2, 2);
 	}
 
 	public async preload() {
 		this.init();
+
+		await Promise.all([
+			Item.loadAll(this.loader)
+		]);
 
 		await this.subStateStack.push(new RoamState(this.subStateStack));
 	}

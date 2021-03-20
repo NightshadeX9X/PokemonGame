@@ -66,3 +66,16 @@ export function createCanvas(size) {
     cnv.height = size.y;
     return { cnv: cnv, ctx: ctx };
 }
+export function shuffleArray(array) {
+    var clone = __spreadArrays(array);
+    var result = [];
+    while (clone.length) {
+        var index = random(0, clone.length - 1);
+        var el = clone.splice(index, 1)[0];
+        result.push(el);
+    }
+    return result;
+}
+export function objectKeys(obj) {
+    return Object.values(obj);
+}

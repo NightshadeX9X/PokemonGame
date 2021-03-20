@@ -118,7 +118,7 @@ var Loader = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.loadJSModule(path)];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 1: return [2 /*return*/, (_a.sent()).default];
                 }
             });
         });
