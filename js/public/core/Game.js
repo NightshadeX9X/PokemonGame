@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import Bag from "../items/bag/Bag.js";
+import Bag from "../items/Bag.js";
 import RoamState from "../states/RoamState.js";
 import BackgroundProcessStack from "./BackgroundProcessStack.js";
 import Input from "./Input.js";

@@ -1,6 +1,7 @@
 var Bag = /** @class */ (function () {
     function Bag() {
         this.pockets = [];
+        this.money = 0;
         this.initPockets();
     }
     Object.defineProperty(Bag.prototype, "items", {
@@ -25,6 +26,14 @@ var Bag = /** @class */ (function () {
         var pocket = this.pockets.find(function (pocket) { return pocket.type === item.type.pocket; });
         pocket === null || pocket === void 0 ? void 0 : pocket.items.push(item);
     };
+    Bag.prototype.addMoney = function (amount) {
+        this.money += amount;
+        if (this.money < 0)
+            this.money = 0;
+        if (this.money > Bag.maxMoney)
+            this.money = Bag.maxMoney;
+    };
+    Bag.maxMoney = Math.pow(10, 6) - 1;
     return Bag;
 }());
 (function (Bag) {
@@ -33,6 +42,16 @@ var Bag = /** @class */ (function () {
             this.type = type;
             this.items = [];
         }
+        Object.defineProperty(Pocket.prototype, "color", {
+            get: function () {
+                if (this.type === Pocket.Type.BERRIES)
+                    return "green";
+                else
+                    return "cyan";
+            },
+            enumerable: false,
+            configurable: true
+        });
         Object.defineProperty(Pocket.prototype, "displayName", {
             get: function () {
                 if (this.type === Pocket.Type.BERRIES)

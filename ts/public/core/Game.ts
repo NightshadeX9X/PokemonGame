@@ -1,4 +1,4 @@
-import Bag from "../items/bag/Bag.js";
+import Bag from "../items/Bag.js";
 import DelayState from "../states/DelayState.js";
 import RoamState from "../states/RoamState.js";
 import { Preloadable, Updatable, Renderable } from "./Attributes.js";

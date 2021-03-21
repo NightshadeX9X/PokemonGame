@@ -1,6 +1,6 @@
 import Loader from '../core/Loader.js';
 import UIDGen from '../util/UIDGen.js';
-import Bag from './bag/Bag.js';
+import Bag from './Bag.js';
 
 class Item {
 	public isNew = true;
