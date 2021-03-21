@@ -1,5 +1,6 @@
 import { Preloadable, Renderable } from "../core/Attributes.js";
 import Loader from "../core/Loader.js";
+import Vector from "../util/Vector.js";
 import GameMap from "./GameMap.js";
 
 class GameMapLayer implements Preloadable, Renderable {
@@ -16,7 +17,8 @@ class GameMapLayer implements Preloadable, Renderable {
 	}
 
 	public render(ctx: CanvasRenderingContext2D) {
-		ctx.drawImage(this.image, 0, 0)
+		const coords = this.gameMap.roamState.camera.convertCoords(new Vector);
+		this.gameMap.roamState.camera.ctx.drawImage(this.image, coords.x, coords.y)
 	}
 }
 

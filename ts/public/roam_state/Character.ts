@@ -42,7 +42,8 @@ class Character implements Preloadable, Renderable {
 		this.spritesheet = new Spritesheet(this.image);
 	}
 	public render(ctx: CanvasRenderingContext2D) {
-		this.spritesheet.render(ctx, this.pos.diff(0, 1).prod(this.roamState.tileSize));
+		const pos = this.roamState.camera.convertCoords(this.pos.diff(0, 1).prod(this.roamState.tileSize));
+		this.spritesheet.render(this.roamState.camera.ctx, pos);
 	}
 	private async takeStep(direction: Direction, container: State) {
 		const vec = Direction.toVector(direction).quo(16);

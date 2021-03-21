@@ -48,8 +48,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import State from "../core/State.js";
+import Camera from "../roam_state/Camera.js";
 import GameMap from "../roam_state/GameMap.js";
 import Player from "../roam_state/Player.js";
+import Vector from "../util/Vector.js";
 var RoamState = /** @class */ (function (_super) {
     __extends(RoamState, _super);
     function RoamState() {
@@ -57,6 +59,7 @@ var RoamState = /** @class */ (function (_super) {
         _this.tileSize = 16;
         _this.player = new Player(_this);
         _this.gameMap = new GameMap(_this, "route5");
+        _this.camera = new Camera(_this, new Vector(480, 320));
         _this.colorToneMaxAlpha = 0.4;
         /** The color tone overlay displayed on top of the Camera display. The color varies depending on the hour
          * This list provides all the color tones using an array, from hour 0 (00:00) to hour 23 (23:00)
@@ -109,12 +112,14 @@ var RoamState = /** @class */ (function (_super) {
     };
     RoamState.prototype.update = function (input) {
         this.player.update(input);
+        this.camera.update();
         _super.prototype.update.call(this, input);
     };
     RoamState.prototype.render = function (ctx) {
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         this.gameMap.render(ctx);
         this.player.render(ctx);
+        this.camera.render(ctx);
         State.prototype.render.call(this, ctx);
     };
     return RoamState;

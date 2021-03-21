@@ -2,6 +2,7 @@ import Input from "../core/Input.js";
 import Loader from "../core/Loader.js";
 import State from "../core/State.js";
 import StateStack from "../core/StateStack.js";
+import Camera from "../roam_state/Camera.js";
 import GameMap from "../roam_state/GameMap.js";
 import Player from "../roam_state/Player.js";
 import { ChildOf } from "../util/functions.js";
@@ -10,8 +11,9 @@ import Vector from "../util/Vector.js";
 class RoamState extends State {
 	public tileSize = 16;
 
-	private player = new Player(this);
+	public player = new Player(this);
 	private gameMap = new GameMap(this, "route5");
+	public camera = new Camera(this, new Vector(480, 320));
 
 	public colorToneMaxAlpha = 0.4;
 	/** The color tone overlay displayed on top of the Camera display. The color varies depending on the hour
@@ -56,6 +58,8 @@ class RoamState extends State {
 	public update(input: Input) {
 		this.player.update(input);
 
+		this.camera.update();
+
 		super.update(input);
 	}
 	public render(ctx: CanvasRenderingContext2D) {
@@ -63,6 +67,8 @@ class RoamState extends State {
 
 		this.gameMap.render(ctx);
 		this.player.render(ctx);
+
+		this.camera.render(ctx);
 
 		State.prototype.render.call(this, ctx);
 	}

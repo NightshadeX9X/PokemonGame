@@ -85,7 +85,8 @@ var Character = /** @class */ (function () {
         });
     };
     Character.prototype.render = function (ctx) {
-        this.spritesheet.render(ctx, this.pos.diff(0, 1).prod(this.roamState.tileSize));
+        var pos = this.roamState.camera.convertCoords(this.pos.diff(0, 1).prod(this.roamState.tileSize));
+        this.spritesheet.render(this.roamState.camera.ctx, pos);
     };
     Character.prototype.takeStep = function (direction, container) {
         return __awaiter(this, void 0, void 0, function () {

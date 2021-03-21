@@ -34,6 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+import Vector from "../util/Vector.js";
 var GameMapLayer = /** @class */ (function () {
     function GameMapLayer(gameMap, zIndex) {
         this.gameMap = gameMap;
@@ -58,7 +59,8 @@ var GameMapLayer = /** @class */ (function () {
         });
     };
     GameMapLayer.prototype.render = function (ctx) {
-        ctx.drawImage(this.image, 0, 0);
+        var coords = this.gameMap.roamState.camera.convertCoords(new Vector);
+        this.gameMap.roamState.camera.ctx.drawImage(this.image, coords.x, coords.y);
     };
     return GameMapLayer;
 }());
