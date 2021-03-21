@@ -1,16 +1,3 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -47,28 +34,62 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import StateStack from "./StateStack.js";
-var BackgroundProcessStack = /** @class */ (function (_super) {
-    __extends(BackgroundProcessStack, _super);
-    function BackgroundProcessStack() {
-        return _super !== null && _super.apply(this, arguments) || this;
+import Vector from "../util/Vector.js";
+import GameMapLayer from "./GameMapLayer.js";
+var GameMap = /** @class */ (function () {
+    function GameMap(roamState, name) {
+        this.roamState = roamState;
+        this.name = name;
+        this.json = null;
+        this.layers = [];
     }
-    BackgroundProcessStack.prototype.insert = function (state, index) {
-        if (index === void 0) { index = 0; }
+    GameMap.prototype.preload = function (loader) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        state.toUpdate = true;
-                        state.blocking = false;
-                        return [4 /*yield*/, StateStack.prototype.insert.call(this, state, index)];
+                    case 0: return [4 /*yield*/, this.loadJSON(loader)];
                     case 1:
+                        _a.sent();
+                        this.populateLayers();
+                        console.log(this.layers);
+                        return [4 /*yield*/, Promise.all(this.layers.map(function (layer) { return layer.preload(loader); }))];
+                    case 2:
                         _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    return BackgroundProcessStack;
-}(StateStack));
-export default BackgroundProcessStack;
+    GameMap.prototype.getSizeInTiles = function () {
+        return Vector.fromString(this.json.sizeInTiles);
+    };
+    GameMap.prototype.getSizeInPx = function () {
+        return this.getSizeInTiles().prod(this.roamState.tileSize);
+    };
+    GameMap.prototype.loadJSON = function (loader) {
+        return __awaiter(this, void 0, void 0, function () {
+            var url, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        url = "/json/maps/" + this.name + ".json";
+                        _a = this;
+                        return [4 /*yield*/, loader.loadJSON(url)];
+                    case 1:
+                        _a.json = (_b.sent());
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    GameMap.prototype.populateLayers = function () {
+        for (var i = 0; i < this.json.layers.length; i++) {
+            this.layers.push(new GameMapLayer(this, i));
+        }
+    };
+    GameMap.prototype.render = function (ctx) {
+        this.layers.sort(function (a, b) { return a.zIndex - b.zIndex; }).forEach(function (layer) { return layer.render(ctx); });
+    };
+    return GameMap;
+}());
+export default GameMap;

@@ -6,8 +6,11 @@ class Item {
 	public isNew = true;
 	private static idGen = new UIDGen("ITEM");
 	public id = Item.idGen.generate();
+	public type: Item.Type;
 
-	constructor(public type: Item.Type) { }
+	constructor(type: Item.Type | keyof typeof Item.Types) {
+		this.type = typeof type === "string" ? Item.Types[type] : type;
+	}
 
 	public static async loadAll(loader: Loader) {
 		Item.Types = {} as any;

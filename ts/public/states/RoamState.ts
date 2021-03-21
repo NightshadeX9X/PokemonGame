@@ -2,16 +2,16 @@ import Input from "../core/Input.js";
 import Loader from "../core/Loader.js";
 import State from "../core/State.js";
 import StateStack from "../core/StateStack.js";
+import GameMap from "../roam_state/GameMap.js";
 import Player from "../roam_state/Player.js";
 import { ChildOf } from "../util/functions.js";
 import Vector from "../util/Vector.js";
 
-interface RoamState extends State { }
-@ChildOf(State)
-class RoamState {
+class RoamState extends State {
 	public tileSize = 16;
 
 	private player = new Player(this);
+	private gameMap = new GameMap(this, "route5");
 
 	public colorToneMaxAlpha = 0.4;
 	/** The color tone overlay displayed on top of the Camera display. The color varies depending on the hour
@@ -47,23 +47,21 @@ class RoamState {
 		[0, 0, 255, this.colorToneMaxAlpha], // 23
 	]
 
-	constructor(public stateStack: StateStack) {
-		State.call(this, stateStack);
-
-	}
-
 	public async preload(loader: Loader) {
-		await this.player.preload(loader);
+		await Promise.all([
+			this.player.preload(loader),
+			this.gameMap.preload(loader),
+		]);
 	}
 	public update(input: Input) {
 		this.player.update(input);
 
-		this.subStateStack.update(input);
-		this.backgroundProcesses.update(input);
+		super.update(input);
 	}
 	public render(ctx: CanvasRenderingContext2D) {
 		ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
+		this.gameMap.render(ctx);
 		this.player.render(ctx);
 
 		State.prototype.render.call(this, ctx);

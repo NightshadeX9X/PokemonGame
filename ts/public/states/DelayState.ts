@@ -2,13 +2,11 @@ import State from "../core/State.js";
 import StateStack from "../core/StateStack.js";
 import { ChildOf } from "../util/functions.js";
 
-interface DelayState extends State { }
-@ChildOf(State)
-class DelayState {
+class DelayState extends State {
 	private elapsedFrames = 0;
 
 	constructor(public stateStack: StateStack, public totalFrames = 60) {
-		State.call(this, stateStack)
+		super(stateStack);
 	}
 
 	public get remainingFrames() {

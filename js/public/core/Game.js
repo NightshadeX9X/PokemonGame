@@ -68,6 +68,8 @@ var Game = /** @class */ (function () {
                             ])];
                     case 1:
                         _a.sent();
+                        this.bag.addItem(new Item("potion"));
+                        console.log(this.bag);
                         return [4 /*yield*/, this.subStateStack.push(new RoamState(this.subStateStack))];
                     case 2:
                         _a.sent();

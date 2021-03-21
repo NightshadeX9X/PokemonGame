@@ -1,17 +1,25 @@
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 import Direction from "../util/Direction.js";
-import { ChildOf } from "../util/functions.js";
 import Vector from "../util/Vector.js";
 import Character from "./Character.js";
-var Player = /** @class */ (function () {
+var Player = /** @class */ (function (_super) {
+    __extends(Player, _super);
     function Player(roamState) {
-        Character.call(this, roamState, "player");
-        this.pos = new Vector(5);
+        var _this = _super.call(this, roamState, "player") || this;
+        _this.pos = new Vector(5);
+        return _this;
     }
     Player.prototype.update = function (input) {
         var _this = this;
@@ -21,9 +29,6 @@ var Player = /** @class */ (function () {
             }
         });
     };
-    Player = __decorate([
-        ChildOf(Character)
-    ], Player);
     return Player;
-}());
+}(Character));
 export default Player;

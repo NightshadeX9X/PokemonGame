@@ -1,8 +1,4 @@
-interface Vector {
-	x: number;
-	y: number;
-}
-class Vector implements Vector {
+class Vector {
 	constructor(public x = 0, public y = x) {
 
 	}

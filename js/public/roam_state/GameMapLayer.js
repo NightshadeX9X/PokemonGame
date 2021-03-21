@@ -1,16 +1,3 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -47,28 +34,32 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import StateStack from "./StateStack.js";
-var BackgroundProcessStack = /** @class */ (function (_super) {
-    __extends(BackgroundProcessStack, _super);
-    function BackgroundProcessStack() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var GameMapLayer = /** @class */ (function () {
+    function GameMapLayer(gameMap, zIndex) {
+        this.gameMap = gameMap;
+        this.zIndex = zIndex;
+        this.image = null;
     }
-    BackgroundProcessStack.prototype.insert = function (state, index) {
-        if (index === void 0) { index = 0; }
+    GameMapLayer.prototype.preload = function (loader) {
         return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var url, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        state.toUpdate = true;
-                        state.blocking = false;
-                        return [4 /*yield*/, StateStack.prototype.insert.call(this, state, index)];
+                        url = "/assets/images/maps/" + this.gameMap.name + "/" + this.zIndex + ".png";
+                        console.log(url);
+                        _a = this;
+                        return [4 /*yield*/, loader.loadImage(url)];
                     case 1:
-                        _a.sent();
+                        _a.image = _b.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    return BackgroundProcessStack;
-}(StateStack));
-export default BackgroundProcessStack;
+    GameMapLayer.prototype.render = function (ctx) {
+        ctx.drawImage(this.image, 0, 0);
+    };
+    return GameMapLayer;
+}());
+export default GameMapLayer;

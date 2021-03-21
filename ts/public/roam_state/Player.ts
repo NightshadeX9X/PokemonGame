@@ -8,12 +8,10 @@ import { ChildOf } from "../util/functions.js";
 import Vector from "../util/Vector.js";
 import Character from "./Character.js";
 
-interface Player extends Character { }
 
-@ChildOf(Character)
-class Player implements Updatable {
+class Player extends Character implements Updatable {
 	constructor(roamState: RoamState) {
-		Character.call(this, roamState, "player");
+		super(roamState, "player");
 
 		this.pos = new Vector(5)
 	}

@@ -1,9 +1,16 @@
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -41,16 +48,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import State from "../core/State.js";
-import { ChildOf } from "../util/functions.js";
-var DelayState = /** @class */ (function () {
+var DelayState = /** @class */ (function (_super) {
+    __extends(DelayState, _super);
     function DelayState(stateStack, totalFrames) {
         if (totalFrames === void 0) { totalFrames = 60; }
-        this.stateStack = stateStack;
-        this.totalFrames = totalFrames;
-        this.elapsedFrames = 0;
-        State.call(this, stateStack);
+        var _this = _super.call(this, stateStack) || this;
+        _this.stateStack = stateStack;
+        _this.totalFrames = totalFrames;
+        _this.elapsedFrames = 0;
+        return _this;
     }
-    DelayState_1 = DelayState;
     Object.defineProperty(DelayState.prototype, "remainingFrames", {
         get: function () {
             return this.totalFrames - this.elapsedFrames - 1;
@@ -71,7 +78,7 @@ var DelayState = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        ds = new DelayState_1(ss, frames);
+                        ds = new DelayState(ss, frames);
                         return [4 /*yield*/, ss.push(ds)];
                     case 1:
                         _a.sent();
@@ -83,10 +90,6 @@ var DelayState = /** @class */ (function () {
             });
         });
     };
-    var DelayState_1;
-    DelayState = DelayState_1 = __decorate([
-        ChildOf(State)
-    ], DelayState);
     return DelayState;
-}());
+}(State));
 export default DelayState;

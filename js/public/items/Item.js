@@ -37,9 +37,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import UIDGen from '../util/UIDGen.js';
 var Item = /** @class */ (function () {
     function Item(type) {
-        this.type = type;
         this.isNew = true;
         this.id = Item.idGen.generate();
+        this.type = typeof type === "string" ? Item.Types[type] : type;
     }
     Item.loadAll = function (loader) {
         return __awaiter(this, void 0, void 0, function () {

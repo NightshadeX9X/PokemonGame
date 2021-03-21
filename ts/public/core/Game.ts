@@ -39,6 +39,10 @@ class Game implements Preloadable, Updatable, Renderable {
 			Item.loadAll(this.loader)
 		]);
 
+		this.bag.addItem(new Item("potion"));
+
+		console.log(this.bag)
+
 		await this.subStateStack.push(new RoamState(this.subStateStack));
 	}
 	public update() {

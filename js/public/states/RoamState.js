@@ -1,9 +1,16 @@
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -41,53 +48,58 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import State from "../core/State.js";
+import GameMap from "../roam_state/GameMap.js";
 import Player from "../roam_state/Player.js";
-import { ChildOf } from "../util/functions.js";
-var RoamState = /** @class */ (function () {
-    function RoamState(stateStack) {
-        this.stateStack = stateStack;
-        this.tileSize = 16;
-        this.player = new Player(this);
-        this.colorToneMaxAlpha = 0.4;
+var RoamState = /** @class */ (function (_super) {
+    __extends(RoamState, _super);
+    function RoamState() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.tileSize = 16;
+        _this.player = new Player(_this);
+        _this.gameMap = new GameMap(_this, "route5");
+        _this.colorToneMaxAlpha = 0.4;
         /** The color tone overlay displayed on top of the Camera display. The color varies depending on the hour
          * This list provides all the color tones using an array, from hour 0 (00:00) to hour 23 (23:00)
          * The current time is rounded to the nearest hour, and that index of the this array is the color tone to draw.
          * Color tones should only be rendered in outdoor maps.
          * Format: [Red, Green, Blue, Alpha]
         */
-        this.colorTones = [
-            [0, 0, 255, this.colorToneMaxAlpha],
-            [0, 0, 255, this.colorToneMaxAlpha * 0.8],
-            [0, 0, 255, this.colorToneMaxAlpha * 0.6],
-            [0, 0, 255, this.colorToneMaxAlpha * 0.4],
-            [0, 0, 255, this.colorToneMaxAlpha * 0.2],
+        _this.colorTones = [
+            [0, 0, 255, _this.colorToneMaxAlpha],
+            [0, 0, 255, _this.colorToneMaxAlpha * 0.8],
+            [0, 0, 255, _this.colorToneMaxAlpha * 0.6],
+            [0, 0, 255, _this.colorToneMaxAlpha * 0.4],
+            [0, 0, 255, _this.colorToneMaxAlpha * 0.2],
             [0, 0, 255, 0],
             [255, 255, 0, 0],
-            [255, 255, 0, this.colorToneMaxAlpha * 0.2],
-            [255, 255, 0, this.colorToneMaxAlpha * 0.4],
-            [255, 255, 0, this.colorToneMaxAlpha * 0.6],
-            [255, 255, 0, this.colorToneMaxAlpha * 0.8],
-            [255, 255, 0, this.colorToneMaxAlpha],
-            [255, 255, 0, this.colorToneMaxAlpha],
-            [255, 255, 0, this.colorToneMaxAlpha * 0.8],
-            [255, 255, 0, this.colorToneMaxAlpha * 0.6],
-            [255, 255, 0, this.colorToneMaxAlpha * 0.4],
-            [255, 255, 0, this.colorToneMaxAlpha * 0.2],
+            [255, 255, 0, _this.colorToneMaxAlpha * 0.2],
+            [255, 255, 0, _this.colorToneMaxAlpha * 0.4],
+            [255, 255, 0, _this.colorToneMaxAlpha * 0.6],
+            [255, 255, 0, _this.colorToneMaxAlpha * 0.8],
+            [255, 255, 0, _this.colorToneMaxAlpha],
+            [255, 255, 0, _this.colorToneMaxAlpha],
+            [255, 255, 0, _this.colorToneMaxAlpha * 0.8],
+            [255, 255, 0, _this.colorToneMaxAlpha * 0.6],
+            [255, 255, 0, _this.colorToneMaxAlpha * 0.4],
+            [255, 255, 0, _this.colorToneMaxAlpha * 0.2],
             [255, 255, 0, 0],
             [0, 0, 255, 0],
-            [0, 0, 255, this.colorToneMaxAlpha * 0.2],
-            [0, 0, 255, this.colorToneMaxAlpha * 0.4],
-            [0, 0, 255, this.colorToneMaxAlpha * 0.6],
-            [0, 0, 255, this.colorToneMaxAlpha * 0.8],
-            [0, 0, 255, this.colorToneMaxAlpha],
+            [0, 0, 255, _this.colorToneMaxAlpha * 0.2],
+            [0, 0, 255, _this.colorToneMaxAlpha * 0.4],
+            [0, 0, 255, _this.colorToneMaxAlpha * 0.6],
+            [0, 0, 255, _this.colorToneMaxAlpha * 0.8],
+            [0, 0, 255, _this.colorToneMaxAlpha],
         ];
-        State.call(this, stateStack);
+        return _this;
     }
     RoamState.prototype.preload = function (loader) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.player.preload(loader)];
+                    case 0: return [4 /*yield*/, Promise.all([
+                            this.player.preload(loader),
+                            this.gameMap.preload(loader),
+                        ])];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -97,17 +109,14 @@ var RoamState = /** @class */ (function () {
     };
     RoamState.prototype.update = function (input) {
         this.player.update(input);
-        this.subStateStack.update(input);
-        this.backgroundProcesses.update(input);
+        _super.prototype.update.call(this, input);
     };
     RoamState.prototype.render = function (ctx) {
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        this.gameMap.render(ctx);
         this.player.render(ctx);
         State.prototype.render.call(this, ctx);
     };
-    RoamState = __decorate([
-        ChildOf(State)
-    ], RoamState);
     return RoamState;
-}());
+}(State));
 export default RoamState;
