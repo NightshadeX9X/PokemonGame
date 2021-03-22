@@ -19,6 +19,8 @@ class Character implements Preloadable, Renderable {
 	private image = null as unknown as HTMLImageElement;
 	private spritesheet = null as unknown as Spritesheet;
 
+	public zIndex = 1;
+
 	public pos = new Vector();
 
 	public direction = Direction.DOWN;

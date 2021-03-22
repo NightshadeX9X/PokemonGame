@@ -1,4 +1,3 @@
-import { throws } from "node:assert";
 import { Renderable, Updatable } from "../core/Attributes.js";
 import RoamState from "../states/RoamState.js";
 import { createCanvas } from "../util/functions.js";

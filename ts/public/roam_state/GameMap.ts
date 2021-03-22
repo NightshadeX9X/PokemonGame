@@ -4,7 +4,7 @@ import RoamState from "../states/RoamState.js";
 import Vector from "../util/Vector.js";
 import GameMapLayer from "./GameMapLayer.js";
 
-class GameMap implements Preloadable, Renderable {
+class GameMap implements Preloadable {
 	public json = null as unknown as GameMap.JSON;
 	public layers: GameMapLayer[] = [];
 
@@ -38,10 +38,6 @@ class GameMap implements Preloadable, Renderable {
 		for (let i = 0; i < this.json.layers.length; i++) {
 			this.layers.push(new GameMapLayer(this, i));
 		}
-	}
-
-	public render(ctx: CanvasRenderingContext2D) {
-		this.layers.sort((a, b) => a.zIndex - b.zIndex).forEach(layer => layer.render(ctx));
 	}
 }
 

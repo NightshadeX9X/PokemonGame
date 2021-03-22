@@ -87,9 +87,6 @@ var GameMap = /** @class */ (function () {
             this.layers.push(new GameMapLayer(this, i));
         }
     };
-    GameMap.prototype.render = function (ctx) {
-        this.layers.sort(function (a, b) { return a.zIndex - b.zIndex; }).forEach(function (layer) { return layer.render(ctx); });
-    };
     return GameMap;
 }());
 export default GameMap;

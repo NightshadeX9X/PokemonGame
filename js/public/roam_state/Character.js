@@ -51,6 +51,7 @@ var Character = /** @class */ (function () {
         this.evtHandler = new Events.Handler();
         this.image = null;
         this.spritesheet = null;
+        this.zIndex = 1;
         this.pos = new Vector();
         this.direction = Direction.DOWN;
     }

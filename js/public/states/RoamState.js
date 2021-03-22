@@ -47,9 +47,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 import State from "../core/State.js";
 import Camera from "../roam_state/Camera.js";
 import GameMap from "../roam_state/GameMap.js";
+import GameMapLayer from "../roam_state/GameMapLayer.js";
 import Player from "../roam_state/Player.js";
 import Vector from "../util/Vector.js";
 var RoamState = /** @class */ (function (_super) {
@@ -82,10 +90,35 @@ var RoamState = /** @class */ (function (_super) {
         this.camera.update();
         _super.prototype.update.call(this, input);
     };
+    RoamState.prototype.getRenderablesSorted = function () {
+        function getPriority(renderable) {
+            if (renderable instanceof GameMapLayer)
+                return 0;
+            return 1;
+        }
+        var renderables = __spreadArrays([this.player], this.gameMap.layers);
+        renderables.sort(function (a, b) {
+            if (a.zIndex !== b.zIndex)
+                return a.zIndex - b.zIndex;
+            if (getPriority(a) !== getPriority(b))
+                return getPriority(a) - getPriority(b);
+            var aPos = a.pos || new Vector;
+            var bPos = b.pos || new Vector;
+            if (aPos.y !== bPos.y)
+                return aPos.y - bPos.y;
+            return 0;
+        });
+        return renderables;
+    };
+    RoamState.prototype.renderRenderables = function (ctx) {
+        var renderables = this.getRenderablesSorted();
+        renderables.forEach(function (renderable) {
+            renderable.render(ctx);
+        });
+    };
     RoamState.prototype.render = function (ctx) {
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        this.gameMap.render(ctx);
-        this.player.render(ctx);
+        this.renderRenderables(ctx);
         this.camera.render(ctx);
         State.prototype.render.call(this, ctx);
     };
