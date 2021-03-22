@@ -1,7 +1,16 @@
 {
 	"sizeInTiles": "48x34",
 	"layers": [
-		{},
+		{
+			"parts": {
+				"wall": [
+					{
+						"range": "0x0-5x0",
+						"value": true
+					}
+				]
+			}
+		},
 		{},
 		{},
 		{},

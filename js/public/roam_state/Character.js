@@ -165,7 +165,17 @@ var Character = /** @class */ (function () {
             if (toPos.x < 0 || toPos.y < 0 || toPos.x >= mapSize.x || toPos.y >= mapSize.y)
                 return false;
         }
+        if (!this.canWalkThroughWalls) {
+            var layer = this.getGameMapLayer();
+            var parts = layer.partsAt(toPos);
+            if (parts.find(function (p) { return p.type === "wall" && p.value; }))
+                return false;
+        }
         return true;
+    };
+    Character.prototype.getGameMapLayer = function () {
+        var _this = this;
+        return this.roamState.gameMap.layers.find(function (l) { return l.zIndex === _this.zIndex - 1; });
     };
     return Character;
 }());

@@ -8,7 +8,7 @@ var Camera = /** @class */ (function () {
         this.pos = this.getTargetPos();
         this.fixedPos = new Vector();
         this.colorToneMaxAlphaDay = 0.1;
-        this.colorToneMaxAlphaNight = 0.05;
+        this.colorToneMaxAlphaNight = 0.15;
         /** The color tone overlay displayed on top of the Camera display. The color varies depending on the hour
          * This list provides all the color tones using an array, from hour 0 (00:00) to hour 23 (23:00)
          * The current time is rounded to the nearest hour, and that index of the this array is the color tone to draw.

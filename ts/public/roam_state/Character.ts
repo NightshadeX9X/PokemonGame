@@ -89,7 +89,17 @@ class Character implements Preloadable, Renderable {
 			if (toPos.x < 0 || toPos.y < 0 || toPos.x >= mapSize.x || toPos.y >= mapSize.y) return false;
 		}
 
+		if (!this.canWalkThroughWalls) {
+			const layer = this.getGameMapLayer();
+			const parts = layer.partsAt(toPos);
+			if (parts.find(p => p.type === "wall" && p.value)) return false;
+		}
+
 		return true;
+	}
+
+	public getGameMapLayer() {
+		return this.roamState.gameMap.layers.find(l => l.zIndex === this.zIndex - 1)!;
 	}
 }
 

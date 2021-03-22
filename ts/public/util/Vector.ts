@@ -183,7 +183,7 @@ class Vector {
 	}
 
 	public static fromStringRange(strRange: Vector.AsStringRange) {
-		const arr = strRange.split("-").map(str => Vector.fromString(str as Vector.AsString)) as [Vector, Vector];
+		const arr = strRange.split("-").map(str => Vector.fromString(str as Vector.AsString)) as [start: Vector, end: Vector];
 		return arr;
 	}
 }

@@ -4,3 +4,4 @@ type UnionToIntersection<T> =
 	(x: infer R) => any ? R : never;
 
 type JSONObject = Record<string, any> | any[];
+type NonNullUndefined<T> = Exclude<T, null | undefined>;

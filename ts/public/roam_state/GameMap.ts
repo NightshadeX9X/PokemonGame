@@ -42,10 +42,17 @@ class GameMap implements Preloadable {
 }
 
 namespace GameMap {
+
 	export interface JSON {
 		sizeInTiles: Vector.AsString;
 		layers: {
-
+			parts?: {
+				[k in GameMapLayer.PartString]?: {
+					range: Vector.AsStringRange;
+					value: GameMapLayer.PartValue;
+					priority?: number;
+				}[]
+			}
 		}[];
 	}
 }

@@ -1,3 +1,14 @@
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -40,6 +51,7 @@ var GameMapLayer = /** @class */ (function () {
         this.gameMap = gameMap;
         this.zIndex = zIndex;
         this.image = null;
+        this.parts = [];
     }
     GameMapLayer.prototype.preload = function (loader) {
         return __awaiter(this, void 0, void 0, function () {
@@ -53,9 +65,55 @@ var GameMapLayer = /** @class */ (function () {
                         return [4 /*yield*/, loader.loadImage(url)];
                     case 1:
                         _a.image = _b.sent();
+                        this.initParts();
+                        console.log(this.parts);
                         return [2 /*return*/];
                 }
             });
+        });
+    };
+    GameMapLayer.prototype.initParts = function () {
+        var _this = this;
+        var parts = this.gameMap.json.layers[this.zIndex].parts;
+        if (!parts)
+            return;
+        var mapSize = this.gameMap.getSizeInTiles();
+        for (var y = 0; y < mapSize.y; y++) {
+            this.parts[y] = [];
+            for (var x = 0; x < mapSize.x; x++) {
+                this.parts[y][x] = [];
+            }
+        }
+        console.log("empty", this.parts);
+        var _loop_1 = function (_partName) {
+            var partName = _partName;
+            var part = parts[partName];
+            if (!part)
+                return { value: void 0 };
+            part.forEach(function (data) {
+                var _a = Vector.fromStringRange(data.range), start = _a[0], end = _a[1];
+                console.log(start, end);
+                for (var y = start.y; y <= end.y; y++) {
+                    for (var x = start.x; x <= end.x; x++) {
+                        _this.parts[y][x].push(__assign(__assign({}, data), { type: partName }));
+                        _this.parts[y][x] = _this.parts[y][x].filter(function (other) {
+                            if (other.type === partName && (other.priority || 0) < (data.priority || 0))
+                                return false;
+                            return true;
+                        });
+                    }
+                }
+            });
+        };
+        for (var _partName in parts) {
+            var state_1 = _loop_1(_partName);
+            if (typeof state_1 === "object")
+                return state_1.value;
+        }
+    };
+    GameMapLayer.prototype.partsAt = function (vec) {
+        return this.parts[vec.y][vec.x].map(function (data) {
+            return { type: data.type, value: data.value };
         });
     };
     GameMapLayer.prototype.render = function (ctx) {

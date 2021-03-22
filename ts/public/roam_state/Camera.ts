@@ -13,7 +13,7 @@ class Camera implements Renderable, Updatable {
 	public ctx: CanvasRenderingContext2D;
 
 	private colorToneMaxAlphaDay = 0.1;
-	private colorToneMaxAlphaNight = 0.05;
+	private colorToneMaxAlphaNight = 0.15;
 	/** The color tone overlay displayed on top of the Camera display. The color varies depending on the hour
 	 * This list provides all the color tones using an array, from hour 0 (00:00) to hour 23 (23:00)
 	 * The current time is rounded to the nearest hour, and that index of the this array is the color tone to draw.
