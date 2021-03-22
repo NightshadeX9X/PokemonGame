@@ -60,39 +60,6 @@ var RoamState = /** @class */ (function (_super) {
         _this.player = new Player(_this);
         _this.gameMap = new GameMap(_this, "route5");
         _this.camera = new Camera(_this, new Vector(480, 320));
-        _this.colorToneMaxAlpha = 0.4;
-        /** The color tone overlay displayed on top of the Camera display. The color varies depending on the hour
-         * This list provides all the color tones using an array, from hour 0 (00:00) to hour 23 (23:00)
-         * The current time is rounded to the nearest hour, and that index of the this array is the color tone to draw.
-         * Color tones should only be rendered in outdoor maps.
-         * Format: [Red, Green, Blue, Alpha]
-        */
-        _this.colorTones = [
-            [0, 0, 255, _this.colorToneMaxAlpha],
-            [0, 0, 255, _this.colorToneMaxAlpha * 0.8],
-            [0, 0, 255, _this.colorToneMaxAlpha * 0.6],
-            [0, 0, 255, _this.colorToneMaxAlpha * 0.4],
-            [0, 0, 255, _this.colorToneMaxAlpha * 0.2],
-            [0, 0, 255, 0],
-            [255, 255, 0, 0],
-            [255, 255, 0, _this.colorToneMaxAlpha * 0.2],
-            [255, 255, 0, _this.colorToneMaxAlpha * 0.4],
-            [255, 255, 0, _this.colorToneMaxAlpha * 0.6],
-            [255, 255, 0, _this.colorToneMaxAlpha * 0.8],
-            [255, 255, 0, _this.colorToneMaxAlpha],
-            [255, 255, 0, _this.colorToneMaxAlpha],
-            [255, 255, 0, _this.colorToneMaxAlpha * 0.8],
-            [255, 255, 0, _this.colorToneMaxAlpha * 0.6],
-            [255, 255, 0, _this.colorToneMaxAlpha * 0.4],
-            [255, 255, 0, _this.colorToneMaxAlpha * 0.2],
-            [255, 255, 0, 0],
-            [0, 0, 255, 0],
-            [0, 0, 255, _this.colorToneMaxAlpha * 0.2],
-            [0, 0, 255, _this.colorToneMaxAlpha * 0.4],
-            [0, 0, 255, _this.colorToneMaxAlpha * 0.6],
-            [0, 0, 255, _this.colorToneMaxAlpha * 0.8],
-            [0, 0, 255, _this.colorToneMaxAlpha],
-        ];
         return _this;
     }
     RoamState.prototype.preload = function (loader) {

@@ -21,11 +21,11 @@ class GameMap implements Preloadable, Renderable {
 		await Promise.all(this.layers.map(layer => layer.preload(loader)));
 	}
 
-	private getSizeInTiles() {
+	public getSizeInTiles() {
 		return Vector.fromString(this.json.sizeInTiles);
 	}
 
-	private getSizeInPx() {
+	public getSizeInPx() {
 		return this.getSizeInTiles().prod(this.roamState.tileSize);
 	}
 

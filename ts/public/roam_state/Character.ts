@@ -11,6 +11,8 @@ import State from "../core/State.js";
 class Character implements Preloadable, Renderable {
 	public walking = false;
 	public canWalk = true;
+	public canWalkOutOfBounds = false;
+	public canWalkThroughWalls = false;
 
 	public evtHandler = new Events.Handler();
 
@@ -56,9 +58,12 @@ class Character implements Preloadable, Renderable {
 		}
 	}
 	public async walk(direction: Direction) {
-		if (!this.canWalk || this.walking) return;
+		if (!this.walking) {
+			this.setDirection(direction);
+		}
+		if (!this.checkWalkingCapability(direction, this.pos)) return;
+
 		this.walking = true;
-		this.setDirection(direction);
 
 		const container = new State(this.roamState.backgroundProcesses);
 		await this.roamState.backgroundProcesses.push(container);
@@ -70,6 +75,19 @@ class Character implements Preloadable, Renderable {
 		container.remove();
 
 		this.walking = false;
+	}
+
+	private checkWalkingCapability(direction: Direction, currentPos: Vector) {
+		const toPos = currentPos.sum(Direction.toVector(direction));
+		const mapSize = this.roamState.gameMap.getSizeInTiles();
+
+		if (!this.canWalk || this.walking) return false;
+
+		if (!this.canWalkOutOfBounds) {
+			if (toPos.x < 0 || toPos.y < 0 || toPos.x >= mapSize.x || toPos.y >= mapSize.y) return false;
+		}
+
+		return true;
 	}
 }
 

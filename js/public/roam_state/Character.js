@@ -46,6 +46,8 @@ var Character = /** @class */ (function () {
         this.imageName = imageName;
         this.walking = false;
         this.canWalk = true;
+        this.canWalkOutOfBounds = false;
+        this.canWalkThroughWalls = false;
         this.evtHandler = new Events.Handler();
         this.image = null;
         this.spritesheet = null;
@@ -124,10 +126,12 @@ var Character = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!this.canWalk || this.walking)
+                        if (!this.walking) {
+                            this.setDirection(direction);
+                        }
+                        if (!this.checkWalkingCapability(direction, this.pos))
                             return [2 /*return*/];
                         this.walking = true;
-                        this.setDirection(direction);
                         container = new State(this.roamState.backgroundProcesses);
                         return [4 /*yield*/, this.roamState.backgroundProcesses.push(container)];
                     case 1:
@@ -150,6 +154,17 @@ var Character = /** @class */ (function () {
                 }
             });
         });
+    };
+    Character.prototype.checkWalkingCapability = function (direction, currentPos) {
+        var toPos = currentPos.sum(Direction.toVector(direction));
+        var mapSize = this.roamState.gameMap.getSizeInTiles();
+        if (!this.canWalk || this.walking)
+            return false;
+        if (!this.canWalkOutOfBounds) {
+            if (toPos.x < 0 || toPos.y < 0 || toPos.x >= mapSize.x || toPos.y >= mapSize.y)
+                return false;
+        }
+        return true;
     };
     return Character;
 }());
