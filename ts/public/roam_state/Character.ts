@@ -92,7 +92,14 @@ class Character implements Preloadable, Renderable {
 		if (!this.canWalkThroughWalls) {
 			const layer = this.getGameMapLayer();
 			const parts = layer.partsAt(toPos);
-			if (parts.find(p => p.type === "wall" && p.value)) return false;
+			if (parts.find(p => {
+				if (p.type !== "wall") return false;
+				if (typeof p.value === "boolean") return p.value;
+
+				const str = p.value.toUpperCase();
+				const chars = str.split("");
+				return chars.includes(Direction.toString(Direction.invert(direction))[0]);
+			})) return false;
 		}
 
 		return true;

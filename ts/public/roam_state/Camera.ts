@@ -61,6 +61,7 @@ class Camera implements Renderable, Updatable {
 		const date = new Date();
 		let hour = date.getHours();
 		if (date.getMinutes() >= 30) hour++;
+		hour %= 24;
 		const colorTone = this.colorTones[hour];
 
 		this.ctx.save();

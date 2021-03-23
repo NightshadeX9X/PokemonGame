@@ -168,7 +168,15 @@ var Character = /** @class */ (function () {
         if (!this.canWalkThroughWalls) {
             var layer = this.getGameMapLayer();
             var parts = layer.partsAt(toPos);
-            if (parts.find(function (p) { return p.type === "wall" && p.value; }))
+            if (parts.find(function (p) {
+                if (p.type !== "wall")
+                    return false;
+                if (typeof p.value === "boolean")
+                    return p.value;
+                var str = p.value.toUpperCase();
+                var chars = str.split("");
+                return chars.includes(Direction.toString(Direction.invert(direction))[0]);
+            }))
                 return false;
         }
         return true;

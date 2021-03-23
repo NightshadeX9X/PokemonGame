@@ -12,14 +12,12 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 import Direction from "../util/Direction.js";
-import Vector from "../util/Vector.js";
 import Character from "./Character.js";
 var Player = /** @class */ (function (_super) {
     __extends(Player, _super);
     function Player(roamState) {
-        var _this = _super.call(this, roamState, "player") || this;
-        _this.pos = new Vector(5);
-        return _this;
+        return _super.call(this, roamState, "player") || this;
+        // this.pos = new Vector(5)
     }
     Player.prototype.update = function (input) {
         var _this = this;

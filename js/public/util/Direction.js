@@ -28,6 +28,16 @@ var Direction;
         return new Vector(0, -1);
     }
     Direction.toVector = toVector;
+    function toString(d) {
+        if (d === Direction.DOWN)
+            return "DOWN";
+        if (d === Direction.LEFT)
+            return "LEFT";
+        if (d === Direction.RIGHT)
+            return "RIGHT";
+        return "UP";
+    }
+    Direction.toString = toString;
     function fromVector(v) {
         var horizontal;
         var vertical;

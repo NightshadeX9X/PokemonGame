@@ -13,7 +13,7 @@ class Player extends Character implements Updatable {
 	constructor(roamState: RoamState) {
 		super(roamState, "player");
 
-		this.pos = new Vector(5)
+		// this.pos = new Vector(5)
 	}
 	public update(input: Input) {
 		(["LEFT", "RIGHT", "UP", "DOWN"] as const).forEach(d => {

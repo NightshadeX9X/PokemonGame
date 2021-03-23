@@ -21,6 +21,12 @@ namespace Direction {
 		if (d === Direction.RIGHT) return new Vector(1, 0);
 		return new Vector(0, -1);
 	}
+	export function toString(d: Direction) {
+		if (d === Direction.DOWN) return "DOWN";
+		if (d === Direction.LEFT) return "LEFT";
+		if (d === Direction.RIGHT) return "RIGHT";
+		return "UP";
+	}
 	export function fromVector(v: Vector) {
 		let horizontal: Direction;
 		let vertical: Direction;

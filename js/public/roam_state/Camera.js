@@ -53,6 +53,7 @@ var Camera = /** @class */ (function () {
         var hour = date.getHours();
         if (date.getMinutes() >= 30)
             hour++;
+        hour %= 24;
         var colorTone = this.colorTones[hour];
         this.ctx.save();
         this.ctx.fillStyle = "rgb(" + colorTone[0] + ", " + colorTone[1] + ", " + colorTone[2] + ", " + colorTone[3] + ")";

@@ -67,7 +67,7 @@ class GameMapLayer implements Preloadable, Renderable {
 
 namespace GameMapLayer {
 	export type PartString = "wall";
-	type WallPartValue = boolean;
+	type WallPartValue = boolean | string;
 	export type PartValue = WallPartValue;
 	export type Part = NonNullUndefined<NonNullUndefined<GameMap.JSON["layers"][number]["parts"]>[PartString]>[number];
 }
