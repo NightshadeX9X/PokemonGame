@@ -40,11 +40,68 @@
 						"range": "3x19-4x19",
 						"value": false,
 						"priority": 1
+					},
+					{
+						"range": "12x5-40x28",
+						"value": true
+					},
+					{
+						"range": "42x25-47x25",
+						"value": true
+					},
+					{
+						"range": "42x26-42x29",
+						"value": true
+					},
+					{
+						"range": "41x30-42x30",
+						"value": true
+					},
+					{
+						"range": "41x31-41x32",
+						"value": true
+					},
+					{
+						"range": "47x26-47x30",
+						"value": true
+					},
+					{
+						"range": "45x30-46x30",
+						"value": true
+					},
+					{
+						"range": "45x31-45x32",
+						"value": true
+					},
+					{
+						"range": "9x0-47x4",
+						"value": true
+					},
+					{
+						"range": "0x22-2x29",
+						"value": true
+					},
+					{
+						"range": "20x29-21x30",
+						"value": true
+					},
+					{
+						"range": "20x32-21x33",
+						"value": true
 					}
 				]
 			}
 		},
-		{},
+		{
+			"parts": {
+				"wall": [
+					{
+						"range": "2x1-6x4",
+						"value": true
+					}
+				]
+			}
+		},
 		{},
 		{},
 		{}
