@@ -34,12 +34,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
+var _a;
 import Direction from "../util/Direction.js";
 import Events from "../util/Events.js";
 import Spritesheet from "../util/Spritesheet.js";
 import Vector from "../util/Vector.js";
 import DelayState from '../states/DelayState.js';
 import State from "../core/State.js";
+var SIGNATURE = Symbol('Character signature');
 var Character = /** @class */ (function () {
     function Character(roamState, imageName) {
         this.roamState = roamState;
@@ -53,8 +62,13 @@ var Character = /** @class */ (function () {
         this.spritesheet = null;
         this.zIndex = 1;
         this.pos = new Vector();
+        this.walkingToward = Vector.from(this.pos);
+        this[_a] = true;
         this.direction = Direction.DOWN;
     }
+    Character.isCharacter = function (c) {
+        return c[SIGNATURE] === true;
+    };
     Character.prototype.setDirection = function (d) {
         this.direction = d;
         this.updateSpritesheetFromDirection(d);
@@ -72,15 +86,15 @@ var Character = /** @class */ (function () {
     };
     Character.prototype.preload = function (loader) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
                         console.log(this);
-                        _a = this;
+                        _b = this;
                         return [4 /*yield*/, loader.loadImage("/assets/images/characters/" + this.imageName + ".png")];
                     case 1:
-                        _a.image = _b.sent();
+                        _b.image = _c.sent();
                         this.spritesheet = new Spritesheet(this.image);
                         return [2 /*return*/];
                 }
@@ -95,24 +109,24 @@ var Character = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var vec, i;
             var _this = this;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         vec = Direction.toVector(direction).quo(16);
                         this.spritesheet.coords.x++;
                         if (this.spritesheet.coords.x > 3)
                             this.spritesheet.coords.x = 0;
                         i = 0;
-                        _a.label = 1;
+                        _b.label = 1;
                     case 1:
                         if (!(i < 4)) return [3 /*break*/, 5];
                         return [4 /*yield*/, State.runFuncAsState(container.subStateStack, function () { return _this.pos.add(vec); })];
                     case 2:
-                        _a.sent();
+                        _b.sent();
                         return [4 /*yield*/, DelayState.create(container.subStateStack, 1)];
                     case 3:
-                        _a.sent();
-                        _a.label = 4;
+                        _b.sent();
+                        _b.label = 4;
                     case 4:
                         i++;
                         return [3 /*break*/, 1];
@@ -123,28 +137,30 @@ var Character = /** @class */ (function () {
     };
     Character.prototype.walk = function (direction) {
         return __awaiter(this, void 0, void 0, function () {
-            var container, i;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var destination, container, i;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         if (!this.walking) {
                             this.setDirection(direction);
                         }
                         if (!this.checkWalkingCapability(direction, this.pos))
                             return [2 /*return*/];
+                        destination = this.pos.sum(Direction.toVector(direction));
                         this.walking = true;
+                        this.walkingToward.set(destination);
                         container = new State(this.roamState.backgroundProcesses);
                         return [4 /*yield*/, this.roamState.backgroundProcesses.push(container)];
                     case 1:
-                        _a.sent();
+                        _b.sent();
                         i = 0;
-                        _a.label = 2;
+                        _b.label = 2;
                     case 2:
                         if (!(i < 4)) return [3 /*break*/, 5];
                         return [4 /*yield*/, this.takeStep(direction, container)];
                     case 3:
-                        _a.sent();
-                        _a.label = 4;
+                        _b.sent();
+                        _b.label = 4;
                     case 4:
                         i++;
                         return [3 /*break*/, 2];
@@ -157,6 +173,7 @@ var Character = /** @class */ (function () {
         });
     };
     Character.prototype.checkWalkingCapability = function (direction, currentPos) {
+        var _this = this;
         var toPos = currentPos.sum(Direction.toVector(direction));
         var mapSize = this.roamState.gameMap.getSizeInTiles();
         if (!this.canWalk || this.walking)
@@ -179,12 +196,27 @@ var Character = /** @class */ (function () {
             }))
                 return false;
         }
+        {
+            var allCharactersButThis = this.allInRoamState().filter(function (c) { return c !== _this; });
+            for (var _i = 0, allCharactersButThis_1 = allCharactersButThis; _i < allCharactersButThis_1.length; _i++) {
+                var c = allCharactersButThis_1[_i];
+                var coveredByC = [c.pos, c.walkingToward];
+                if (coveredByC.some(function (v) { return v.equals(toPos); }))
+                    return false;
+            }
+        }
         return true;
     };
     Character.prototype.getGameMapLayer = function () {
         var _this = this;
         return this.roamState.gameMap.layers.find(function (l) { return l.zIndex === _this.zIndex - 1; });
     };
+    Character.prototype.allInRoamState = function () {
+        var things = __spreadArrays([this.roamState.player], this.roamState.gameObjects);
+        var characters = things.filter(function (x) { return Character.isCharacter(x); });
+        return characters;
+    };
     return Character;
 }());
+_a = SIGNATURE;
 export default Character;

@@ -6,6 +6,7 @@ import Camera from "../roam_state/Camera.js";
 import Character from "../roam_state/Character.js";
 import GameMap from "../roam_state/GameMap.js";
 import GameMapLayer from "../roam_state/GameMapLayer.js";
+import GameObject from "../roam_state/game_objects/GameObject.js";
 import Player from "../roam_state/Player.js";
 import Vector from "../util/Vector.js";
 
@@ -16,6 +17,8 @@ class RoamState extends State {
 	public gameMap = new GameMap(this, "route5");
 	public camera = new Camera(this, new Vector(480, 320));
 
+	public gameObjects: GameObject[] = [];
+
 	public async preload(loader: Loader) {
 		await Promise.all([
 			this.player.preload(loader),
@@ -24,17 +27,19 @@ class RoamState extends State {
 	}
 	public update(input: Input) {
 		this.player.update(input);
+		this.gameObjects.forEach(go => go.update(input));
 
 		this.camera.update();
 
 		super.update(input);
 	}
 	private getRenderablesSorted() {
-		function getPriority(renderable: Character | GameMapLayer) {
+		function getPriority(renderable: Character | GameMapLayer | GameObject) {
 			if (renderable instanceof GameMapLayer) return 0;
-			return 1;
+			if (Character.isCharacter(renderable)) return 1;
+			return 2;
 		}
-		let renderables = [this.player, ...this.gameMap.layers];
+		let renderables = [this.player, ...this.gameMap.layers, ...this.gameObjects];
 		renderables.sort((a, b) => {
 			if (a.zIndex !== b.zIndex) return a.zIndex - b.zIndex;
 			if (getPriority(a) !== getPriority(b)) return getPriority(a) - getPriority(b);

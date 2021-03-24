@@ -56,6 +56,7 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
 };
 import State from "../core/State.js";
 import Camera from "../roam_state/Camera.js";
+import Character from "../roam_state/Character.js";
 import GameMap from "../roam_state/GameMap.js";
 import GameMapLayer from "../roam_state/GameMapLayer.js";
 import Player from "../roam_state/Player.js";
@@ -68,6 +69,7 @@ var RoamState = /** @class */ (function (_super) {
         _this.player = new Player(_this);
         _this.gameMap = new GameMap(_this, "route5");
         _this.camera = new Camera(_this, new Vector(480, 320));
+        _this.gameObjects = [];
         return _this;
     }
     RoamState.prototype.preload = function (loader) {
@@ -87,6 +89,7 @@ var RoamState = /** @class */ (function (_super) {
     };
     RoamState.prototype.update = function (input) {
         this.player.update(input);
+        this.gameObjects.forEach(function (go) { return go.update(input); });
         this.camera.update();
         _super.prototype.update.call(this, input);
     };
@@ -94,9 +97,11 @@ var RoamState = /** @class */ (function (_super) {
         function getPriority(renderable) {
             if (renderable instanceof GameMapLayer)
                 return 0;
-            return 1;
+            if (Character.isCharacter(renderable))
+                return 1;
+            return 2;
         }
-        var renderables = __spreadArrays([this.player], this.gameMap.layers);
+        var renderables = __spreadArrays([this.player], this.gameMap.layers, this.gameObjects);
         renderables.sort(function (a, b) {
             if (a.zIndex !== b.zIndex)
                 return a.zIndex - b.zIndex;

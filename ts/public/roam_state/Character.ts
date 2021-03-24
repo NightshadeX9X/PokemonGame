@@ -8,6 +8,8 @@ import Vector from "../util/Vector.js";
 import DelayState from '../states/DelayState.js';
 import State from "../core/State.js";
 
+const SIGNATURE = Symbol('Character signature');
+
 class Character implements Preloadable, Renderable {
 	public walking = false;
 	public canWalk = true;
@@ -22,6 +24,12 @@ class Character implements Preloadable, Renderable {
 	public zIndex = 1;
 
 	public pos = new Vector();
+	public walkingToward = Vector.from(this.pos);
+
+	private readonly [SIGNATURE] = true;
+	public static isCharacter(c: any): c is Character {
+		return c[SIGNATURE] === true;
+	}
 
 	public direction = Direction.DOWN;
 	public setDirection(d: Direction) {
@@ -37,7 +45,6 @@ class Character implements Preloadable, Renderable {
 	}
 
 	constructor(public roamState: RoamState, private imageName: string) {
-
 	}
 
 	public async preload(loader: Loader) {
@@ -65,7 +72,9 @@ class Character implements Preloadable, Renderable {
 		}
 		if (!this.checkWalkingCapability(direction, this.pos)) return;
 
+		const destination = this.pos.sum(Direction.toVector(direction));
 		this.walking = true;
+		this.walkingToward.set(destination);
 
 		const container = new State(this.roamState.backgroundProcesses);
 		await this.roamState.backgroundProcesses.push(container);
@@ -102,11 +111,25 @@ class Character implements Preloadable, Renderable {
 			})) return false;
 		}
 
+		{
+			const allCharactersButThis = this.allInRoamState().filter(c => c !== this);
+			for (const c of allCharactersButThis) {
+				const coveredByC = [c.pos, c.walkingToward];
+				if (coveredByC.some(v => v.equals(toPos))) return false;
+			}
+		}
+
 		return true;
 	}
 
 	public getGameMapLayer() {
 		return this.roamState.gameMap.layers.find(l => l.zIndex === this.zIndex - 1)!;
+	}
+
+	public allInRoamState() {
+		const things = [this.roamState.player, ...this.roamState.gameObjects] as Character[];
+		const characters = things.filter(x => Character.isCharacter(x));
+		return characters;
 	}
 }
 
