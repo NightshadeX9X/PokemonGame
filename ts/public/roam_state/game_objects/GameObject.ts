@@ -8,7 +8,11 @@ import Character from "../Character.js";
 class GameObject implements Preloadable, Updatable, Renderable {
 	public evtHandler = new Events.Handler();
 	public zIndex = 1;
-	constructor(public roamState: RoamState, private pos = new Vector, private size = new Vector(1)) { }
+	constructor(public roamState: RoamState, private pos = new Vector, private size = new Vector(1)) {
+		this.evtHandler.addEventListener('player touch', () => {
+			this.onPlayerTouch();
+		});
+	}
 
 	public getCoveredSquares() { return this.pos.rangeTo(this.pos.sum(this.size)) }
 
@@ -21,6 +25,8 @@ class GameObject implements Preloadable, Updatable, Renderable {
 	public getGameMapLayer() {
 		return Character.prototype.getGameMapLayer.call(this);
 	}
+
+	protected async onPlayerTouch() { }
 }
 
 export default GameObject;

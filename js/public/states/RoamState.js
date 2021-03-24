@@ -82,6 +82,7 @@ var RoamState = /** @class */ (function (_super) {
                         ])];
                     case 1:
                         _a.sent();
+                        console.log(this.gameObjects);
                         return [2 /*return*/];
                 }
             });
@@ -126,6 +127,30 @@ var RoamState = /** @class */ (function (_super) {
         this.renderRenderables(ctx);
         this.camera.render(ctx);
         State.prototype.render.call(this, ctx);
+    };
+    RoamState.prototype.loadAllGameObjects = function (loader) {
+        return __awaiter(this, void 0, void 0, function () {
+            var files;
+            var _this = this;
+            return __generator(this, function (_a) {
+                this.gameObjects = [];
+                files = this.gameMap.json.gameObjects.map(function (str) { return str + ".js"; });
+                console.log(files);
+                Promise.all(files.map(function (file) { return __awaiter(_this, void 0, void 0, function () {
+                    var mod;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0: return [4 /*yield*/, loader.loadJSDefault("/js/roam_state/game_objects/definitions/" + file)];
+                            case 1:
+                                mod = _a.sent();
+                                this.gameObjects.push(new mod(this));
+                                return [2 /*return*/];
+                        }
+                    });
+                }); }));
+                return [2 /*return*/];
+            });
+        });
     };
     return RoamState;
 }(State));

@@ -16,7 +16,6 @@ class GameMapLayer implements Preloadable, Renderable {
 		console.log(url)
 		this.image = await loader.loadImage(url);
 		this.initParts();
-		console.log(this.parts)
 	}
 
 	private initParts() {
@@ -29,7 +28,6 @@ class GameMapLayer implements Preloadable, Renderable {
 				this.parts[y][x] = [];
 			}
 		}
-		console.log("empty", this.parts)
 
 		for (const _partName in parts) {
 			const partName = _partName as keyof typeof parts;
@@ -39,7 +37,6 @@ class GameMapLayer implements Preloadable, Renderable {
 
 			part.forEach(data => {
 				const [start, end] = Vector.fromStringRange(data.range);
-				console.log(start, end)
 				for (let y = start.y; y <= end.y; y++) {
 					for (let x = start.x; x <= end.x; x++) {
 						this.parts[y][x].push({ ...data, type: partName });

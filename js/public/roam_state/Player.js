@@ -16,8 +16,12 @@ import Character from "./Character.js";
 var Player = /** @class */ (function (_super) {
     __extends(Player, _super);
     function Player(roamState) {
-        return _super.call(this, roamState, "player") || this;
-        // this.pos = new Vector(5)
+        var _this = _super.call(this, roamState, "player") || this;
+        _this.evtHandler.addEventListener('walk', function (oldPos, newPos) {
+            var gos = _this.roamState.gameObjects.filter(function (go) { return go.getCoveredSquares().find(function (v) { return v.equals(newPos); }); });
+            gos.forEach(function (go) { return go.evtHandler.dispatchEvent('player touch'); });
+        });
+        return _this;
     }
     Player.prototype.update = function (input) {
         var _this = this;

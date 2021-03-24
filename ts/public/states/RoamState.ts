@@ -24,6 +24,8 @@ class RoamState extends State {
 			this.player.preload(loader),
 			this.gameMap.preload(loader),
 		]);
+
+		console.log(this.gameObjects);
 	}
 	public update(input: Input) {
 		this.player.update(input);
@@ -65,6 +67,16 @@ class RoamState extends State {
 		this.camera.render(ctx);
 
 		State.prototype.render.call(this, ctx);
+	}
+
+	public async loadAllGameObjects(loader: Loader) {
+		this.gameObjects = [];
+		const files = this.gameMap.json.gameObjects.map(str => `${str}.js`);
+		console.log(files)
+		Promise.all(files.map(async file => {
+			const mod = await loader.loadJSDefault<ChildClass<typeof GameObject>>(`/js/roam_state/game_objects/definitions/${file}`);
+			this.gameObjects.push(new mod(this))
+		}))
 	}
 }
 

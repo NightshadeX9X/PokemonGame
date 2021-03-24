@@ -105,5 +105,8 @@
 		{},
 		{},
 		{}
+	],
+	"gameObjects": [
+		"route5/ladder1"
 	]
 }

@@ -34,6 +34,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 import Vector from "../util/Vector.js";
 import GameMapLayer from "./GameMapLayer.js";
 var GameMap = /** @class */ (function () {
@@ -51,8 +58,7 @@ var GameMap = /** @class */ (function () {
                     case 1:
                         _a.sent();
                         this.populateLayers();
-                        console.log(this.layers);
-                        return [4 /*yield*/, Promise.all(this.layers.map(function (layer) { return layer.preload(loader); }))];
+                        return [4 /*yield*/, Promise.all(__spreadArrays([this.roamState.loadAllGameObjects(loader)], this.layers.map(function (layer) { return layer.preload(loader); })))];
                     case 2:
                         _a.sent();
                         return [2 /*return*/];

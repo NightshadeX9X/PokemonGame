@@ -172,17 +172,4 @@ var rowlet = new Creature('rowlet');
 rowlet.ability.powerup = Ability.Powerup.CANNOT_SWITCH;
 var popplio = new Creature('popplio');
 var leafage = new Attack('leafage', 40);
-(function () { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, popplio.useAttack(leafage, rowlet)];
-            case 1:
-                _a.sent();
-                return [4 /*yield*/, rowlet.switchOut()];
-            case 2:
-                _a.sent();
-                return [2 /*return*/];
-        }
-    });
-}); })();
 console.log(rowlet.hp);

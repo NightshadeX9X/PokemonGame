@@ -66,7 +66,6 @@ var GameMapLayer = /** @class */ (function () {
                     case 1:
                         _a.image = _b.sent();
                         this.initParts();
-                        console.log(this.parts);
                         return [2 /*return*/];
                 }
             });
@@ -84,7 +83,6 @@ var GameMapLayer = /** @class */ (function () {
                 this.parts[y][x] = [];
             }
         }
-        console.log("empty", this.parts);
         var _loop_1 = function (_partName) {
             var partName = _partName;
             var part = parts[partName];
@@ -92,7 +90,6 @@ var GameMapLayer = /** @class */ (function () {
                 return { value: void 0 };
             part.forEach(function (data) {
                 var _a = Vector.fromStringRange(data.range), start = _a[0], end = _a[1];
-                console.log(start, end);
                 for (var y = start.y; y <= end.y; y++) {
                     for (var x = start.x; x <= end.x; x++) {
                         _this.parts[y][x].push(__assign(__assign({}, data), { type: partName }));

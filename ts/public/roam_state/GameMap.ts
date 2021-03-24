@@ -16,9 +16,8 @@ class GameMap implements Preloadable {
 		await this.loadJSON(loader);
 
 		this.populateLayers();
-		console.log(this.layers)
 
-		await Promise.all(this.layers.map(layer => layer.preload(loader)));
+		await Promise.all([this.roamState.loadAllGameObjects(loader), ...this.layers.map(layer => layer.preload(loader))]);
 	}
 
 	public getSizeInTiles() {
@@ -32,6 +31,7 @@ class GameMap implements Preloadable {
 	private async loadJSON(loader: Loader) {
 		const url = `/json/maps/${this.name}.json`;
 		this.json = await loader.loadJSON(url) as GameMap.JSON;
+
 	}
 
 	private populateLayers() {
@@ -54,6 +54,7 @@ namespace GameMap {
 				}[]
 			}
 		}[];
+		gameObjects: string[];
 	}
 }
 

@@ -95,10 +95,6 @@ rowlet.ability.powerup = Ability.Powerup.CANNOT_SWITCH;
 const popplio = new Creature('popplio');
 
 const leafage = new Attack('leafage', 40);
-(async () => {
-	await popplio.useAttack(leafage, rowlet);
-	await rowlet.switchOut();
-})();
 
 
 console.log(rowlet.hp)

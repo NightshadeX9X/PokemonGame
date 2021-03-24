@@ -73,6 +73,7 @@ class Character implements Preloadable, Renderable {
 		if (!this.checkWalkingCapability(direction, this.pos)) return;
 
 		const destination = this.pos.sum(Direction.toVector(direction));
+		const oldPos = Vector.from(this.pos);
 		this.walking = true;
 		this.walkingToward.set(destination);
 
@@ -86,6 +87,7 @@ class Character implements Preloadable, Renderable {
 		container.remove();
 
 		this.walking = false;
+		this.evtHandler.dispatchEvent('walk', oldPos, destination, direction);
 	}
 
 	private checkWalkingCapability(direction: Direction, currentPos: Vector) {

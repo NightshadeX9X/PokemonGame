@@ -137,7 +137,7 @@ var Character = /** @class */ (function () {
     };
     Character.prototype.walk = function (direction) {
         return __awaiter(this, void 0, void 0, function () {
-            var destination, container, i;
+            var destination, oldPos, container, i;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -147,6 +147,7 @@ var Character = /** @class */ (function () {
                         if (!this.checkWalkingCapability(direction, this.pos))
                             return [2 /*return*/];
                         destination = this.pos.sum(Direction.toVector(direction));
+                        oldPos = Vector.from(this.pos);
                         this.walking = true;
                         this.walkingToward.set(destination);
                         container = new State(this.roamState.backgroundProcesses);
@@ -167,6 +168,7 @@ var Character = /** @class */ (function () {
                     case 5:
                         container.remove();
                         this.walking = false;
+                        this.evtHandler.dispatchEvent('walk', oldPos, destination, direction);
                         return [2 /*return*/];
                 }
             });
