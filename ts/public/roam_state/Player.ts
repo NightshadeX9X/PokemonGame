@@ -13,9 +13,9 @@ class Player extends Character implements Updatable {
 	constructor(roamState: RoamState) {
 		super(roamState, "player");
 
-		this.evtHandler.addEventListener('walk', (oldPos: Vector, newPos: Vector) => {
+		this.evtHandler.addEventListener('walk', (oldPos: Vector, newPos: Vector, direction: Direction) => {
 			const gos = this.roamState.gameObjects.filter(go => go.getCoveredSquares().find(v => v.equals(newPos)));
-			gos.forEach(go => go.evtHandler.dispatchEvent('player touch'));
+			gos.forEach(go => go.evtHandler.dispatchEvent('player touch', oldPos, newPos, direction));
 		})
 	}
 	public update(input: Input) {

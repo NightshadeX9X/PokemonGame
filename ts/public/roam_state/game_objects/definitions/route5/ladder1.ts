@@ -1,13 +1,10 @@
 import RoamState from "../../../../states/RoamState.js";
 import Vector from "../../../../util/Vector.js";
-import GameObject from "../../GameObject.js";
+import Ladder from "../../types/Ladder.js";
 
-class ladder1 extends GameObject {
+class ladder1 extends Ladder {
 	constructor(roamState: RoamState) {
-		super(roamState, new Vector(1, 0), new Vector(2));
-	}
-	async onPlayerTouch() {
-		console.log("ladder touched")
+		super(roamState, new Vector(3, 19), new Vector(2), 2, 1);
 	}
 }
 

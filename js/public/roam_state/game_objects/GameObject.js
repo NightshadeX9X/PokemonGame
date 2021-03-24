@@ -47,8 +47,8 @@ var GameObject = /** @class */ (function () {
         this.size = size;
         this.evtHandler = new Events.Handler();
         this.zIndex = 1;
-        this.evtHandler.addEventListener('player touch', function () {
-            _this.onPlayerTouch();
+        this.evtHandler.addEventListener('player touch', function (oldPos, newPos, direction) {
+            _this.onPlayerTouch(oldPos, newPos, direction);
         });
     }
     GameObject.prototype.getCoveredSquares = function () { return this.pos.rangeTo(this.pos.sum(this.size)); };
@@ -62,7 +62,7 @@ var GameObject = /** @class */ (function () {
     GameObject.prototype.getGameMapLayer = function () {
         return Character.prototype.getGameMapLayer.call(this);
     };
-    GameObject.prototype.onPlayerTouch = function () {
+    GameObject.prototype.onPlayerTouch = function (oldPos, newPos, direction) {
         return __awaiter(this, void 0, void 0, function () { return __generator(this, function (_a) {
             return [2 /*return*/];
         }); });
