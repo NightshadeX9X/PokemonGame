@@ -137,13 +137,17 @@ var RoamState = /** @class */ (function (_super) {
                 files = this.gameMap.json.gameObjects.map(function (str) { return str + ".js"; });
                 console.log(files);
                 Promise.all(files.map(function (file) { return __awaiter(_this, void 0, void 0, function () {
-                    var mod;
+                    var mod, instance;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0: return [4 /*yield*/, loader.loadJSDefault("/js/roam_state/game_objects/definitions/" + file)];
                             case 1:
                                 mod = _a.sent();
-                                this.gameObjects.push(new mod(this));
+                                instance = new mod(this);
+                                this.gameObjects.push(instance);
+                                return [4 /*yield*/, instance.preload(loader)];
+                            case 2:
+                                _a.sent();
                                 return [2 /*return*/];
                         }
                     });

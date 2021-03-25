@@ -53,6 +53,7 @@ class Character implements Preloadable, Renderable {
 		this.spritesheet = new Spritesheet(this.image);
 	}
 	public render(ctx: CanvasRenderingContext2D) {
+		if (!this.image || !this.spritesheet) return;
 		const pos = this.roamState.camera.convertCoords(this.pos.diff(0, 1).prod(this.roamState.tileSize));
 		this.spritesheet.render(this.roamState.camera.ctx, pos);
 	}
@@ -132,6 +133,11 @@ class Character implements Preloadable, Renderable {
 		const things = [this.roamState.player, ...this.roamState.gameObjects] as Character[];
 		const characters = things.filter(x => Character.isCharacter(x));
 		return characters;
+	}
+
+	public setPos(pos: Vector) {
+		this.pos.set(pos);
+		this.walkingToward.set(pos);
 	}
 }
 

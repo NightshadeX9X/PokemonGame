@@ -21,7 +21,6 @@ var Ladder = /** @class */ (function (_super) {
         _this.topZIndex = topZIndex;
         _this.bottomZIndex = bottomZIndex;
         _this.evtHandler.addEventListener('player touch', function (oldPos, newPos) {
-            console.log(newPos, oldPos);
             var top = _this.pos.y;
             var bottom = _this.pos.y + _this.size.y - 1;
             if (newPos.y === top)

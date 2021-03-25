@@ -102,6 +102,8 @@ var Character = /** @class */ (function () {
         });
     };
     Character.prototype.render = function (ctx) {
+        if (!this.image || !this.spritesheet)
+            return;
         var pos = this.roamState.camera.convertCoords(this.pos.diff(0, 1).prod(this.roamState.tileSize));
         this.spritesheet.render(this.roamState.camera.ctx, pos);
     };
@@ -217,6 +219,10 @@ var Character = /** @class */ (function () {
         var things = __spreadArrays([this.roamState.player], this.roamState.gameObjects);
         var characters = things.filter(function (x) { return Character.isCharacter(x); });
         return characters;
+    };
+    Character.prototype.setPos = function (pos) {
+        this.pos.set(pos);
+        this.walkingToward.set(pos);
     };
     return Character;
 }());

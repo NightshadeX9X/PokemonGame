@@ -75,8 +75,10 @@ class RoamState extends State {
 		console.log(files)
 		Promise.all(files.map(async file => {
 			const mod = await loader.loadJSDefault<ChildClass<typeof GameObject>>(`/js/roam_state/game_objects/definitions/${file}`);
-			this.gameObjects.push(new mod(this))
-		}))
+			const instance = new mod(this);
+			this.gameObjects.push(instance);
+			await instance.preload(loader)
+		}));
 	}
 }
 

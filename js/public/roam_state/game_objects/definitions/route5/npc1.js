@@ -1,3 +1,16 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,49 +47,28 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import Events from "../../util/Events.js";
-import Vector from "../../util/Vector.js";
-import Character from "../Character.js";
-var GameObject = /** @class */ (function () {
-    function GameObject(roamState, pos, size) {
-        if (pos === void 0) { pos = new Vector; }
-        if (size === void 0) { size = new Vector(1); }
-        this.roamState = roamState;
-        this.pos = pos;
-        this.size = size;
-        this.evtHandler = new Events.Handler();
-        this.zIndex = 1;
+import NPC from "../../types/NPC.js";
+import Vector from '../../../../util/Vector.js';
+import Direction from "../../../../util/Direction.js";
+var npc1 = /** @class */ (function (_super) {
+    __extends(npc1, _super);
+    function npc1(roamState) {
+        var _this = _super.call(this, roamState, "player", new Vector(6, 24)) || this;
+        _this.setPos(new Vector(6, 24));
+        return _this;
     }
-    GameObject.prototype.getCoveredSquares = function () { return this.pos.rangeTo(this.pos.sum(this.size)); };
-    GameObject.prototype.preload = function (loader) {
+    npc1.prototype.onInteraction = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
             return __generator(this, function (_a) {
-                this.evtHandler.addEventListener('player touch', function (oldPos, newPos, direction) {
-                    _this.onPlayerTouch(oldPos, newPos, direction);
-                });
-                this.evtHandler.addEventListener('interaction', function () {
-                    _this.onInteraction();
-                });
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.walk(Direction.getRandom())];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
             });
         });
     };
-    GameObject.prototype.update = function (input) { };
-    GameObject.prototype.render = function (ctx) { };
-    GameObject.prototype.getGameMapLayer = function () {
-        return Character.prototype.getGameMapLayer.call(this);
-    };
-    GameObject.prototype.onPlayerTouch = function (oldPos, newPos, direction) {
-        return __awaiter(this, void 0, void 0, function () { return __generator(this, function (_a) {
-            return [2 /*return*/];
-        }); });
-    };
-    GameObject.prototype.onInteraction = function () {
-        return __awaiter(this, void 0, void 0, function () { return __generator(this, function (_a) {
-            return [2 /*return*/];
-        }); });
-    };
-    return GameObject;
-}());
-export default GameObject;
+    return npc1;
+}(NPC));
+export default npc1;

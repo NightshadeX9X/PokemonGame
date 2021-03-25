@@ -98,6 +98,11 @@
 					{
 						"range": "2x1-6x4",
 						"value": true
+					},
+					{
+						"range": "4x4-4x4",
+						"value": false,
+						"priority": 1
 					}
 				]
 			}
@@ -107,6 +112,7 @@
 		{}
 	],
 	"gameObjects": [
-		"route5/ladder1"
+		"route5/ladder1",
+		"route5/npc1"
 	]
 }

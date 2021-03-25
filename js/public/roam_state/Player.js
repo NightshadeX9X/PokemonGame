@@ -17,6 +17,7 @@ var Player = /** @class */ (function (_super) {
     __extends(Player, _super);
     function Player(roamState) {
         var _this = _super.call(this, roamState, "player") || this;
+        _this.lastInteraction = 20;
         _this.evtHandler.addEventListener('walk', function (oldPos, newPos, direction) {
             var gos = _this.roamState.gameObjects.filter(function (go) { return go.getCoveredSquares().find(function (v) { return v.equals(newPos); }); });
             gos.forEach(function (go) { return go.evtHandler.dispatchEvent('player touch', oldPos, newPos, direction); });
@@ -30,6 +31,16 @@ var Player = /** @class */ (function (_super) {
                 _this.walk(Direction[d]);
             }
         });
+        if (input.interactionKey && this.lastInteraction >= 20 && !this.walking) {
+            var posAhead_1 = this.pos.sum(Direction.toVector(this.direction));
+            var gos = this.roamState.gameObjects.filter(function (go) { return go.getCoveredSquares().find(function (v) { return v.equals(posAhead_1); }); });
+            console.log(gos.map(function (go) { return go.evtHandler; }));
+            gos.forEach(function (go) {
+                go.evtHandler.dispatchEvent('interaction');
+            });
+            this.lastInteraction = -1;
+        }
+        this.lastInteraction++;
     };
     return Player;
 }(Character));

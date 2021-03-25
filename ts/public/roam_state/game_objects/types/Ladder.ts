@@ -8,7 +8,6 @@ class Ladder extends GameObject {
 		super(roamState, pos, size);
 
 		this.evtHandler.addEventListener('player touch', (oldPos: Vector, newPos: Vector) => {
-			console.log(newPos, oldPos);
 			const top = this.pos.y;
 			const bottom = this.pos.y + this.size.y - 1;
 
