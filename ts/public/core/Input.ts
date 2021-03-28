@@ -21,6 +21,22 @@ class Input {
 		ALT: false
 	}
 	public preventDefault = true;
+
+	private freezers: boolean[] = [];
+	public isFrozen() {
+		return this.freezers.some(b => b);
+	}
+	public freeze() {
+		const index = this.freezers.length;
+		this.freezers.push(true);
+		const self = this;
+		return {
+			thaw() {
+				self.freezers[index] = false;
+			}
+		}
+	}
+
 	constructor() {
 
 	}
@@ -53,6 +69,7 @@ class Input {
 	}
 
 	public keyIsDown(key: string) {
+		if (this.isFrozen()) return false;
 		return this.keyStates.get(key) === Input.keyDownSymbol;
 	}
 

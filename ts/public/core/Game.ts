@@ -22,6 +22,13 @@ class Game implements Preloadable, Updatable, Renderable {
 
 	public bag = new Bag();
 
+	private debug = true;
+	public isCheatMode() { return this.debug && this.input.specialKeys.CTRL }
+
+	public permissions = {
+		canOpenXMenu: true,
+	}
+
 	constructor() {
 
 	}

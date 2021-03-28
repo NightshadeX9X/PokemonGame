@@ -34,51 +34,61 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import Events from "../../util/Events.js";
-import Vector from "../../util/Vector.js";
-import Character from "../Character.js";
-var GameObject = /** @class */ (function () {
-    function GameObject(roamState, pos, size) {
-        if (pos === void 0) { pos = new Vector; }
-        if (size === void 0) { size = new Vector(1); }
-        this.roamState = roamState;
-        this.pos = pos;
-        this.size = size;
-        this.evtHandler = new Events.Handler();
-        this.zIndex = 1;
-    }
-    GameObject.prototype.getInteractionSquares = function () { return this.pos.rangeTo(this.pos.sum(this.size)); };
-    GameObject.prototype.getTouchableSquares = function () { return this.pos.rangeTo(this.pos.sum(this.size)); };
-    GameObject.prototype.getBlockingSquares = function () { return this.pos.rangeTo(this.pos.sum(this.size)); };
-    GameObject.prototype.preload = function (loader) {
-        return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
-            return __generator(this, function (_a) {
-                this.evtHandler.addEventListener('player touch', function (oldPos, newPos, direction) {
-                    _this.onPlayerTouch(oldPos, newPos, direction);
-                });
-                this.evtHandler.addEventListener('interaction', function () {
-                    _this.onInteraction();
-                });
-                return [2 /*return*/];
-            });
+import './BattleTesting.js';
+import Game from './core/Game.js';
+var game = new Game();
+function preload() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, game.preload()];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
         });
-    };
-    GameObject.prototype.update = function (input) { };
-    GameObject.prototype.render = function (ctx) { };
-    GameObject.prototype.getGameMapLayer = function () {
-        return Character.prototype.getGameMapLayer.call(this);
-    };
-    GameObject.prototype.onPlayerTouch = function (oldPos, newPos, direction) {
-        return __awaiter(this, void 0, void 0, function () { return __generator(this, function (_a) {
+    });
+}
+function update() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            game.update();
             return [2 /*return*/];
-        }); });
-    };
-    GameObject.prototype.onInteraction = function () {
-        return __awaiter(this, void 0, void 0, function () { return __generator(this, function (_a) {
+        });
+    });
+}
+function render() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            game.render();
+            window.requestAnimationFrame(function () { return render(); });
             return [2 /*return*/];
-        }); });
-    };
-    return GameObject;
-}());
-export default GameObject;
+        });
+    });
+}
+function setup() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, preload()];
+                case 1:
+                    _a.sent();
+                    setInterval(function () {
+                        update();
+                    }, 1000 / game.fps);
+                    render();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+window.onload = function () { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, setup()];
+            case 1:
+                _a.sent();
+                return [2 /*return*/];
+        }
+    });
+}); };

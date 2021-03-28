@@ -51,7 +51,9 @@ var Game = /** @class */ (function () {
         this.backgroundProcesses = new BackgroundProcessStack(this, this);
         this.fps = 60;
         this.bag = new Bag();
+        this.debug = true;
     }
+    Game.prototype.isCheatMode = function () { return this.debug && this.input.specialKeys.CTRL; };
     Game.prototype.init = function () {
         this.input.start(document);
         this.ctx.imageSmoothingEnabled = false;

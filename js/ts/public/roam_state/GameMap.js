@@ -34,51 +34,65 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import Events from "../../util/Events.js";
-import Vector from "../../util/Vector.js";
-import Character from "../Character.js";
-var GameObject = /** @class */ (function () {
-    function GameObject(roamState, pos, size) {
-        if (pos === void 0) { pos = new Vector; }
-        if (size === void 0) { size = new Vector(1); }
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
+import Vector from "../util/Vector.js";
+import GameMapLayer from "./GameMapLayer.js";
+var GameMap = /** @class */ (function () {
+    function GameMap(roamState, name) {
         this.roamState = roamState;
-        this.pos = pos;
-        this.size = size;
-        this.evtHandler = new Events.Handler();
-        this.zIndex = 1;
+        this.name = name;
+        this.json = null;
+        this.layers = [];
     }
-    GameObject.prototype.getInteractionSquares = function () { return this.pos.rangeTo(this.pos.sum(this.size)); };
-    GameObject.prototype.getTouchableSquares = function () { return this.pos.rangeTo(this.pos.sum(this.size)); };
-    GameObject.prototype.getBlockingSquares = function () { return this.pos.rangeTo(this.pos.sum(this.size)); };
-    GameObject.prototype.preload = function (loader) {
+    GameMap.prototype.preload = function (loader) {
         return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
             return __generator(this, function (_a) {
-                this.evtHandler.addEventListener('player touch', function (oldPos, newPos, direction) {
-                    _this.onPlayerTouch(oldPos, newPos, direction);
-                });
-                this.evtHandler.addEventListener('interaction', function () {
-                    _this.onInteraction();
-                });
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.loadJSON(loader)];
+                    case 1:
+                        _a.sent();
+                        this.populateLayers();
+                        return [4 /*yield*/, Promise.all(__spreadArrays([this.roamState.loadAllGameObjects(loader)], this.layers.map(function (layer) { return layer.preload(loader); })))];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
             });
         });
     };
-    GameObject.prototype.update = function (input) { };
-    GameObject.prototype.render = function (ctx) { };
-    GameObject.prototype.getGameMapLayer = function () {
-        return Character.prototype.getGameMapLayer.call(this);
+    GameMap.prototype.getSizeInTiles = function () {
+        return Vector.fromString(this.json.sizeInTiles);
     };
-    GameObject.prototype.onPlayerTouch = function (oldPos, newPos, direction) {
-        return __awaiter(this, void 0, void 0, function () { return __generator(this, function (_a) {
-            return [2 /*return*/];
-        }); });
+    GameMap.prototype.getSizeInPx = function () {
+        return this.getSizeInTiles().prod(this.roamState.tileSize);
     };
-    GameObject.prototype.onInteraction = function () {
-        return __awaiter(this, void 0, void 0, function () { return __generator(this, function (_a) {
-            return [2 /*return*/];
-        }); });
+    GameMap.prototype.loadJSON = function (loader) {
+        return __awaiter(this, void 0, void 0, function () {
+            var url, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        url = "/json/maps/" + this.name + ".json";
+                        _a = this;
+                        return [4 /*yield*/, loader.loadJSON(url)];
+                    case 1:
+                        _a.json = (_b.sent());
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
-    return GameObject;
+    GameMap.prototype.populateLayers = function () {
+        for (var i = 0; i < this.json.layers.length; i++) {
+            this.layers.push(new GameMapLayer(this, i));
+        }
+    };
+    return GameMap;
 }());
-export default GameObject;
+export default GameMap;

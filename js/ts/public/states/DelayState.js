@@ -1,3 +1,16 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,51 +47,49 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import Events from "../../util/Events.js";
-import Vector from "../../util/Vector.js";
-import Character from "../Character.js";
-var GameObject = /** @class */ (function () {
-    function GameObject(roamState, pos, size) {
-        if (pos === void 0) { pos = new Vector; }
-        if (size === void 0) { size = new Vector(1); }
-        this.roamState = roamState;
-        this.pos = pos;
-        this.size = size;
-        this.evtHandler = new Events.Handler();
-        this.zIndex = 1;
+import State from "../core/State.js";
+var DelayState = /** @class */ (function (_super) {
+    __extends(DelayState, _super);
+    function DelayState(stateStack, totalFrames) {
+        if (totalFrames === void 0) { totalFrames = 60; }
+        var _this = _super.call(this, stateStack) || this;
+        _this.stateStack = stateStack;
+        _this.totalFrames = totalFrames;
+        _this.elapsedFrames = 0;
+        return _this;
     }
-    GameObject.prototype.getInteractionSquares = function () { return this.pos.rangeTo(this.pos.sum(this.size)); };
-    GameObject.prototype.getTouchableSquares = function () { return this.pos.rangeTo(this.pos.sum(this.size)); };
-    GameObject.prototype.getBlockingSquares = function () { return this.pos.rangeTo(this.pos.sum(this.size)); };
-    GameObject.prototype.preload = function (loader) {
+    Object.defineProperty(DelayState.prototype, "remainingFrames", {
+        get: function () {
+            return this.totalFrames - this.elapsedFrames - 1;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    DelayState.prototype.update = function () {
+        if (this.remainingFrames <= 0) {
+            this.remove();
+            return;
+        }
+        this.elapsedFrames++;
+    };
+    DelayState.create = function (ss, frames) {
         return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
+            var ds;
             return __generator(this, function (_a) {
-                this.evtHandler.addEventListener('player touch', function (oldPos, newPos, direction) {
-                    _this.onPlayerTouch(oldPos, newPos, direction);
-                });
-                this.evtHandler.addEventListener('interaction', function () {
-                    _this.onInteraction();
-                });
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0:
+                        ds = new DelayState(ss, frames);
+                        return [4 /*yield*/, ss.push(ds)];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, ds.waitForRemoval()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
             });
         });
     };
-    GameObject.prototype.update = function (input) { };
-    GameObject.prototype.render = function (ctx) { };
-    GameObject.prototype.getGameMapLayer = function () {
-        return Character.prototype.getGameMapLayer.call(this);
-    };
-    GameObject.prototype.onPlayerTouch = function (oldPos, newPos, direction) {
-        return __awaiter(this, void 0, void 0, function () { return __generator(this, function (_a) {
-            return [2 /*return*/];
-        }); });
-    };
-    GameObject.prototype.onInteraction = function () {
-        return __awaiter(this, void 0, void 0, function () { return __generator(this, function (_a) {
-            return [2 /*return*/];
-        }); });
-    };
-    return GameObject;
-}());
-export default GameObject;
+    return DelayState;
+}(State));
+export default DelayState;

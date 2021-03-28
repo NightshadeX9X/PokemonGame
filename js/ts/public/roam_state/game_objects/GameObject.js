@@ -49,7 +49,6 @@ var GameObject = /** @class */ (function () {
     }
     GameObject.prototype.getInteractionSquares = function () { return this.pos.rangeTo(this.pos.sum(this.size)); };
     GameObject.prototype.getTouchableSquares = function () { return this.pos.rangeTo(this.pos.sum(this.size)); };
-    GameObject.prototype.getBlockingSquares = function () { return this.pos.rangeTo(this.pos.sum(this.size)); };
     GameObject.prototype.preload = function (loader) {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;

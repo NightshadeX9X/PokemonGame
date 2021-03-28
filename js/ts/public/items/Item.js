@@ -34,51 +34,59 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import Events from "../../util/Events.js";
-import Vector from "../../util/Vector.js";
-import Character from "../Character.js";
-var GameObject = /** @class */ (function () {
-    function GameObject(roamState, pos, size) {
-        if (pos === void 0) { pos = new Vector; }
-        if (size === void 0) { size = new Vector(1); }
-        this.roamState = roamState;
-        this.pos = pos;
-        this.size = size;
-        this.evtHandler = new Events.Handler();
-        this.zIndex = 1;
+import UIDGen from '../util/UIDGen.js';
+var Item = /** @class */ (function () {
+    function Item(type) {
+        this.isNew = true;
+        this.id = Item.idGen.generate();
+        this.type = typeof type === "string" ? Item.Types[type] : type;
     }
-    GameObject.prototype.getInteractionSquares = function () { return this.pos.rangeTo(this.pos.sum(this.size)); };
-    GameObject.prototype.getTouchableSquares = function () { return this.pos.rangeTo(this.pos.sum(this.size)); };
-    GameObject.prototype.getBlockingSquares = function () { return this.pos.rangeTo(this.pos.sum(this.size)); };
-    GameObject.prototype.preload = function (loader) {
+    Item.loadAll = function (loader) {
         return __awaiter(this, void 0, void 0, function () {
+            var itemFiles;
             var _this = this;
             return __generator(this, function (_a) {
-                this.evtHandler.addEventListener('player touch', function (oldPos, newPos, direction) {
-                    _this.onPlayerTouch(oldPos, newPos, direction);
-                });
-                this.evtHandler.addEventListener('interaction', function () {
-                    _this.onInteraction();
-                });
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0:
+                        Item.Types = {};
+                        return [4 /*yield*/, loader.loadJSON("/items")];
+                    case 1:
+                        itemFiles = _a.sent();
+                        return [4 /*yield*/, Promise.all(itemFiles.map(function (itemFile) { return __awaiter(_this, void 0, void 0, function () {
+                                var type;
+                                return __generator(this, function (_a) {
+                                    switch (_a.label) {
+                                        case 0: return [4 /*yield*/, loader.loadJSDefault("/js/items/definitions/" + itemFile)];
+                                        case 1:
+                                            type = _a.sent();
+                                            Item.Types[type.itemName] = type;
+                                            return [2 /*return*/];
+                                    }
+                                });
+                            }); }))];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
             });
         });
     };
-    GameObject.prototype.update = function (input) { };
-    GameObject.prototype.render = function (ctx) { };
-    GameObject.prototype.getGameMapLayer = function () {
-        return Character.prototype.getGameMapLayer.call(this);
-    };
-    GameObject.prototype.onPlayerTouch = function (oldPos, newPos, direction) {
-        return __awaiter(this, void 0, void 0, function () { return __generator(this, function (_a) {
-            return [2 /*return*/];
-        }); });
-    };
-    GameObject.prototype.onInteraction = function () {
-        return __awaiter(this, void 0, void 0, function () { return __generator(this, function (_a) {
-            return [2 /*return*/];
-        }); });
-    };
-    return GameObject;
+    Item.idGen = new UIDGen("ITEM");
+    return Item;
 }());
-export default GameObject;
+(function (Item) {
+    var Type = /** @class */ (function () {
+        function Type(itemName, pocket, price) {
+            if (price === void 0) { price = 0; }
+            this.itemName = itemName;
+            this.pocket = pocket;
+            this.price = price;
+        }
+        return Type;
+    }());
+    Item.Type = Type;
+    var Types;
+    (function (Types) {
+    })(Types = Item.Types || (Item.Types = {}));
+})(Item || (Item = {}));
+export default Item;

@@ -96,6 +96,7 @@ class Character implements Preloadable, Renderable {
 		const mapSize = this.roamState.gameMap.getSizeInTiles();
 
 		if (!this.canWalk || this.walking) return false;
+		if (this.roamState.stateStack.game.isCheatMode()) return true;
 
 		if (!this.canWalkOutOfBounds) {
 			if (toPos.x < 0 || toPos.y < 0 || toPos.x >= mapSize.x || toPos.y >= mapSize.y) return false;
@@ -120,6 +121,10 @@ class Character implements Preloadable, Renderable {
 				const coveredByC = [c.pos, c.walkingToward];
 				if (coveredByC.some(v => v.equals(toPos))) return false;
 			}
+		}
+
+		{
+			if (this.roamState.gameObjects.some(go => go.getBlockingSquares().find(v => v.equals(toPos)))) return false;
 		}
 
 		return true;

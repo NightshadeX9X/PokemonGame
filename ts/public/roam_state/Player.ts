@@ -15,7 +15,7 @@ class Player extends Character implements Updatable {
 		super(roamState, "player");
 
 		this.evtHandler.addEventListener('walk', (oldPos: Vector, newPos: Vector, direction: Direction) => {
-			const gos = this.roamState.gameObjects.filter(go => go.getCoveredSquares().find(v => v.equals(newPos)));
+			const gos = this.roamState.gameObjects.filter(go => go.getTouchableSquares().find(v => v.equals(newPos)));
 			gos.forEach(go => go.evtHandler.dispatchEvent('player touch', oldPos, newPos, direction));
 		});
 	}
@@ -28,7 +28,7 @@ class Player extends Character implements Updatable {
 
 		if (input.interactionKey && this.lastInteraction >= 20 && !this.walking) {
 			const posAhead = this.pos.sum(Direction.toVector(this.direction));
-			const gos = this.roamState.gameObjects.filter(go => go.getCoveredSquares().find(v => v.equals(posAhead)));
+			const gos = this.roamState.gameObjects.filter(go => go.getInteractionSquares().find(v => v.equals(posAhead)));
 			console.log(gos.map(go => go.evtHandler))
 			gos.forEach(go => {
 				go.evtHandler.dispatchEvent('interaction');

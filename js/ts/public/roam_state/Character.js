@@ -182,8 +182,6 @@ var Character = /** @class */ (function () {
         var mapSize = this.roamState.gameMap.getSizeInTiles();
         if (!this.canWalk || this.walking)
             return false;
-        if (this.roamState.stateStack.game.isCheatMode())
-            return true;
         if (!this.canWalkOutOfBounds) {
             if (toPos.x < 0 || toPos.y < 0 || toPos.x >= mapSize.x || toPos.y >= mapSize.y)
                 return false;
@@ -210,10 +208,6 @@ var Character = /** @class */ (function () {
                 if (coveredByC.some(function (v) { return v.equals(toPos); }))
                     return false;
             }
-        }
-        {
-            if (this.roamState.gameObjects.some(function (go) { return go.getBlockingSquares().find(function (v) { return v.equals(toPos); }); }))
-                return false;
         }
         return true;
     };
