@@ -9,7 +9,21 @@ var Input = /** @class */ (function () {
             ALT: false
         };
         this.preventDefault = true;
+        this.freezers = [];
     }
+    Input.prototype.isFrozen = function () {
+        return this.freezers.some(function (b) { return b; });
+    };
+    Input.prototype.freeze = function () {
+        var index = this.freezers.length;
+        this.freezers.push(true);
+        var self = this;
+        return {
+            thaw: function () {
+                self.freezers[index] = false;
+            }
+        };
+    };
     Input.prototype.start = function (el) {
         var _this = this;
         el.addEventListener('keydown', function (e) {
@@ -37,6 +51,8 @@ var Input = /** @class */ (function () {
         this.specialKeys.CTRL = e.ctrlKey;
     };
     Input.prototype.keyIsDown = function (key) {
+        if (this.isFrozen())
+            return false;
         return this.keyStates.get(key) === Input.keyDownSymbol;
     };
     Object.defineProperty(Input.prototype, "directionKeyStates", {

@@ -79,6 +79,7 @@ var Ladder = /** @class */ (function (_super) {
             });
         });
     };
+    Ladder.prototype.getBlockingSquares = function () { return []; };
     return Ladder;
 }(GameObject));
 export default Ladder;

@@ -103,6 +103,96 @@
 						"range": "4x4-4x4",
 						"value": false,
 						"priority": 1
+					},
+					{
+						"range": "1x1-1x5",
+						"value": true
+					},
+					{
+						"range": "2x5-2x7",
+						"value": true
+					},
+					{
+						"range": "3x7-6x7",
+						"value": true
+					},
+					{
+						"range": "6x8-6x9",
+						"value": true
+					},
+					{
+						"range": "2x10-2x19",
+						"value": true
+					},
+					{
+						"range": "5x19-9x19",
+						"value": true
+					},
+					{
+						"range": "9x6-9x18",
+						"value": true
+					},
+					{
+						"range": "8x1-8x5",
+						"value": true
+					},
+					{
+						"range": "3x9-5x9",
+						"value": true
+					},
+					{
+						"range": "7x0-7x0",
+						"value": true
+					},
+					{
+						"range": "12x5-12x28",
+						"value": true
+					},
+					{
+						"range": "12x28-40x28",
+						"value": true
+					},
+					{
+						"range": "40x5-40x28",
+						"value": true
+					},
+					{
+						"range": "12x4-40x4",
+						"value": true
+					},
+					{
+						"range": "16x8-25x14",
+						"value": true
+					},
+					{
+						"range": "17x14-18x14",
+						"value": false,
+						"priority": 1
+					},
+					{
+						"range": "37x4-39x8",
+						"value": true
+					},
+					{
+						"range": "37x6-37x6",
+						"value": false,
+						"priority": 1
+					},
+					{
+						"range": "17x15-17x15",
+						"value": "L"
+					},
+					{
+						"range": "16x15-16x15",
+						"value": "R"
+					},
+					{
+						"range": "19x15-19x15",
+						"value": "L"
+					},
+					{
+						"range": "18x15-18x15",
+						"value": "R"
 					}
 				]
 			}

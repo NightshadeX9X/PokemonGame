@@ -18,6 +18,8 @@ class Ladder extends GameObject {
 			if (newPos.y === bottom) this.roamState.player.zIndex = this.bottomZIndex;
 		})
 	}
+	public getBlockingSquares() { return [] }
+
 }
 
 export default Ladder;
