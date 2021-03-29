@@ -203,6 +203,7 @@
 	],
 	"gameObjects": [
 		"route5/ladder1",
+		"route5/ladder2",
 		"route5/npc1",
 		"route5/door1"
 	]

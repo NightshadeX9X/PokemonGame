@@ -109,6 +109,9 @@ var GameMapLayer = /** @class */ (function () {
         }
     };
     GameMapLayer.prototype.partsAt = function (vec) {
+        var _a, _b;
+        if (!Array.isArray((_b = (_a = this.parts) === null || _a === void 0 ? void 0 : _a[vec.y]) === null || _b === void 0 ? void 0 : _b[vec.x]))
+            return [];
         return this.parts[vec.y][vec.x].map(function (data) {
             return { type: data.type, value: data.value };
         });

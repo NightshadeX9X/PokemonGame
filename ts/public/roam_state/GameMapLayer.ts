@@ -51,6 +51,7 @@ class GameMapLayer implements Preloadable, Renderable {
 	}
 
 	public partsAt(vec: Vector) {
+		if (!Array.isArray(this.parts?.[vec.y]?.[vec.x])) return [];
 		return this.parts[vec.y][vec.x].map(data => {
 			return { type: data.type, value: data.value };
 		})
