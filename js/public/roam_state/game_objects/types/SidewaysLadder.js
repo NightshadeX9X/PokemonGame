@@ -80,6 +80,10 @@ var SidewaysLadder = /** @class */ (function (_super) {
         });
     };
     SidewaysLadder.prototype.getBlockingSquares = function () { return []; };
+    SidewaysLadder.prototype.getTouchableSquares = function () {
+        var _this = this;
+        return [this.leftZIndex, this.rightZIndex].map(function (zIndex) { return ({ squares: [_this.left, _this.right], zIndex: zIndex }); });
+    };
     return SidewaysLadder;
 }(GameObject));
 export default SidewaysLadder;

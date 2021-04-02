@@ -13,8 +13,12 @@ const SIGNATURE = Symbol('Character signature');
 class Character implements Preloadable, Renderable {
 	public walking = false;
 	public canWalk = true;
+	public canTurn = true;
 	public canWalkOutOfBounds = false;
 	public canWalkThroughWalls = false;
+
+	public freeze() { this.canWalk = false; this.canTurn = false; }
+	public unfreeze() { this.canWalk = true; this.canTurn = true; }
 
 	public evtHandler = new Events.Handler();
 
@@ -33,6 +37,7 @@ class Character implements Preloadable, Renderable {
 
 	public direction = Direction.DOWN;
 	public setDirection(d: Direction) {
+		if (!this.canTurn) return;
 		this.direction = d;
 		this.updateSpritesheetFromDirection(d);
 	}
@@ -124,7 +129,7 @@ class Character implements Preloadable, Renderable {
 		}
 
 		{
-			if (this.roamState.gameObjects.some(go => go.getBlockingSquares().find(v => v.equals(toPos)))) return false;
+			if (this.roamState.gameObjects.some(go => go.getBlockingSquares().find(d => d.squares.find(v => v.equals(toPos)) && d.zIndex === this.zIndex))) return false;
 		}
 
 		return true;

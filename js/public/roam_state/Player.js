@@ -19,7 +19,14 @@ var Player = /** @class */ (function (_super) {
         var _this = _super.call(this, roamState, "player") || this;
         _this.lastInteraction = 20;
         _this.evtHandler.addEventListener('walk', function (oldPos, newPos, direction) {
-            var gos = _this.roamState.gameObjects.filter(function (go) { return go.getTouchableSquares().find(function (v) { return v.equals(newPos); }); });
+            var gos = _this.roamState.gameObjects.filter(function (go) {
+                for (var _i = 0, _a = go.getTouchableSquares(); _i < _a.length; _i++) {
+                    var value = _a[_i];
+                    if (value.zIndex === _this.zIndex && value.squares.find(function (v) { return v.equals(newPos); }))
+                        return true;
+                }
+                return false;
+            });
             gos.forEach(function (go) { return go.evtHandler.dispatchEvent('player touch', oldPos, newPos, direction); });
         });
         return _this;
@@ -33,8 +40,14 @@ var Player = /** @class */ (function (_super) {
         });
         if (input.interactionKey && this.lastInteraction >= 20 && !this.walking) {
             var posAhead_1 = this.pos.sum(Direction.toVector(this.direction));
-            var gos = this.roamState.gameObjects.filter(function (go) { return go.getInteractionSquares().find(function (v) { return v.equals(posAhead_1); }); });
-            console.log(gos.map(function (go) { return go.evtHandler; }));
+            var gos = this.roamState.gameObjects.filter(function (go) {
+                for (var _i = 0, _a = go.getInteractionSquares(); _i < _a.length; _i++) {
+                    var value = _a[_i];
+                    if (value.zIndex === _this.zIndex && value.squares.find(function (v) { return v.equals(posAhead_1); }))
+                        return true;
+                }
+                return false;
+            });
             gos.forEach(function (go) {
                 go.evtHandler.dispatchEvent('interaction');
             });

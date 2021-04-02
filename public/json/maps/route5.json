@@ -194,17 +194,86 @@
 						"range": "18x15-18x15",
 						"value": "R"
 					}
+				],
+				"grass": [
+					{
+						"range": "2x10-7x18",
+						"value": "0"
+					}
 				]
 			}
 		},
-		{},
+		{
+			"parts": {
+				"wall": [
+					{
+						"range": "38x3-38x3",
+						"value": true
+					},
+					{
+						"range": "39x4-39x9",
+						"value": true
+					},
+					{
+						"range": "39x5-39x7",
+						"value": false,
+						"priority": 1
+					},
+					{
+						"range": "37x8-39x8",
+						"value": true
+					},
+					{
+						"range": "37x4-37x8",
+						"value": true
+					},
+					{
+						"range": "37x6-37x6",
+						"value": false,
+						"priority": 1
+					},
+					{
+						"range": "39x4-47x4",
+						"value": true
+					},
+					{
+						"range": "39x8-47x8",
+						"value": true
+					},
+					{
+						"range": "16x7-25x14",
+						"value": true
+					},
+					{
+						"range": "17x8-24x13",
+						"value": false,
+						"priority": 1
+					},
+					{
+						"range": "17x14-18x14",
+						"value": false,
+						"priority": 1
+					},
+					{
+						"range": "20x9-24x12",
+						"value": true,
+						"priority": 2
+					},
+					{
+						"range": "22x12-22x12",
+						"value": false,
+						"priority": 3
+					}
+				]
+			}
+		},
 		{},
 		{}
 	],
 	"gameObjects": [
 		"route5/ladder1",
 		"route5/ladder2",
-		"route5/npc1",
-		"route5/door1"
+		"route5/ladder3",
+		"route5/npc1"
 	]
 }

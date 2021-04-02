@@ -47,9 +47,9 @@ var GameObject = /** @class */ (function () {
         this.evtHandler = new Events.Handler();
         this.zIndex = 1;
     }
-    GameObject.prototype.getInteractionSquares = function () { return this.pos.rangeTo(this.pos.sum(this.size)); };
-    GameObject.prototype.getTouchableSquares = function () { return this.pos.rangeTo(this.pos.sum(this.size)); };
-    GameObject.prototype.getBlockingSquares = function () { return this.pos.rangeTo(this.pos.sum(this.size)); };
+    GameObject.prototype.getInteractionSquares = function () { return [{ squares: this.pos.rangeTo(this.pos.sum(this.size)), zIndex: this.zIndex }]; };
+    GameObject.prototype.getTouchableSquares = function () { return [{ squares: this.pos.rangeTo(this.pos.sum(this.size)), zIndex: this.zIndex }]; };
+    GameObject.prototype.getBlockingSquares = function () { return [{ squares: this.pos.rangeTo(this.pos.sum(this.size)), zIndex: this.zIndex }]; };
     GameObject.prototype.preload = function (loader) {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;

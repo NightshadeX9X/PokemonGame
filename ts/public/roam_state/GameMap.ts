@@ -17,7 +17,8 @@ class GameMap implements Preloadable {
 
 		this.populateLayers();
 
-		await Promise.all([this.roamState.loadAllGameObjects(loader), ...this.layers.map(layer => layer.preload(loader))]);
+		await Promise.all(this.layers.map(layer => layer.preload(loader)));
+		await this.roamState.loadAllGameObjects(loader)
 	}
 
 	public getSizeInTiles() {

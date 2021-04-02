@@ -55,6 +55,7 @@ var Character = /** @class */ (function () {
         this.imageName = imageName;
         this.walking = false;
         this.canWalk = true;
+        this.canTurn = true;
         this.canWalkOutOfBounds = false;
         this.canWalkThroughWalls = false;
         this.evtHandler = new Events.Handler();
@@ -66,10 +67,14 @@ var Character = /** @class */ (function () {
         this[_a] = true;
         this.direction = Direction.DOWN;
     }
+    Character.prototype.freeze = function () { this.canWalk = false; this.canTurn = false; };
+    Character.prototype.unfreeze = function () { this.canWalk = true; this.canTurn = true; };
     Character.isCharacter = function (c) {
         return c[SIGNATURE] === true;
     };
     Character.prototype.setDirection = function (d) {
+        if (!this.canTurn)
+            return;
         this.direction = d;
         this.updateSpritesheetFromDirection(d);
     };
@@ -212,7 +217,7 @@ var Character = /** @class */ (function () {
             }
         }
         {
-            if (this.roamState.gameObjects.some(function (go) { return go.getBlockingSquares().find(function (v) { return v.equals(toPos); }); }))
+            if (this.roamState.gameObjects.some(function (go) { return go.getBlockingSquares().find(function (d) { return d.squares.find(function (v) { return v.equals(toPos); }) && d.zIndex === _this.zIndex; }); }))
                 return false;
         }
         return true;

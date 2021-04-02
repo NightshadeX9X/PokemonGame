@@ -80,6 +80,10 @@ var Ladder = /** @class */ (function (_super) {
         });
     };
     Ladder.prototype.getBlockingSquares = function () { return []; };
+    Ladder.prototype.getTouchableSquares = function () {
+        var _this = this;
+        return [this.topZIndex, this.bottomZIndex].map(function (zIndex) { return ({ squares: _this.pos.rangeTo(_this.pos.sum(_this.size)), zIndex: zIndex }); });
+    };
     return Ladder;
 }(GameObject));
 export default Ladder;

@@ -14,9 +14,9 @@ class GameObject implements Preloadable, Updatable, Renderable {
 
 	}
 
-	public getInteractionSquares() { return this.pos.rangeTo(this.pos.sum(this.size)) }
-	public getTouchableSquares() { return this.pos.rangeTo(this.pos.sum(this.size)) }
-	public getBlockingSquares() { return this.pos.rangeTo(this.pos.sum(this.size)) }
+	public getInteractionSquares() { return [{ squares: this.pos.rangeTo(this.pos.sum(this.size)), zIndex: this.zIndex }] }
+	public getTouchableSquares() { return [{ squares: this.pos.rangeTo(this.pos.sum(this.size)), zIndex: this.zIndex }] }
+	public getBlockingSquares() { return [{ squares: this.pos.rangeTo(this.pos.sum(this.size)), zIndex: this.zIndex }] }
 
 	public async preload(loader: Loader) {
 		this.evtHandler.addEventListener('player touch', (oldPos: Vector, newPos: Vector, direction: Direction) => {

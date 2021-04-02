@@ -2,6 +2,7 @@ import { Preloadable, Renderable } from "../core/Attributes.js";
 import Loader from "../core/Loader.js";
 import Vector from "../util/Vector.js";
 import GameMap from "./GameMap.js";
+import Grass from "./game_objects/dynamic/Grass.js";
 
 class GameMapLayer implements Preloadable, Renderable {
 	private image = null as unknown as HTMLImageElement;
@@ -65,9 +66,10 @@ class GameMapLayer implements Preloadable, Renderable {
 }
 
 namespace GameMapLayer {
-	export type PartString = "wall";
+	export type PartString = "wall" | "grass";
 	type WallPartValue = boolean | string;
-	export type PartValue = WallPartValue;
+	type GrassPartValue = string;
+	export type PartValue = WallPartValue | GrassPartValue;
 	export type Part = NonNullUndefined<NonNullUndefined<GameMap.JSON["layers"][number]["parts"]>[PartString]>[number];
 }
 

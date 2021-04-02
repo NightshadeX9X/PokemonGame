@@ -19,7 +19,10 @@ class Ladder extends GameObject {
 		})
 	}
 	public getBlockingSquares() { return [] }
+	public getTouchableSquares() {
+		return [this.topZIndex, this.bottomZIndex].map(zIndex => ({ squares: this.pos.rangeTo(this.pos.sum(this.size)), zIndex }));
 
+	}
 }
 
 export default Ladder;

@@ -1,3 +1,16 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,61 +47,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import Vector from "../util/Vector.js";
-import GameMapLayer from "./GameMapLayer.js";
-var GameMap = /** @class */ (function () {
-    function GameMap(roamState, name) {
-        this.roamState = roamState;
-        this.name = name;
-        this.json = null;
-        this.layers = [];
+import GameObject from "../GameObject.js";
+var Grass = /** @class */ (function (_super) {
+    __extends(Grass, _super);
+    function Grass() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    GameMap.prototype.preload = function (loader) {
+    Grass.prototype.preload = function () {
         return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.loadJSON(loader)];
-                    case 1:
-                        _a.sent();
-                        this.populateLayers();
-                        return [4 /*yield*/, Promise.all(this.layers.map(function (layer) { return layer.preload(loader); }))];
-                    case 2:
-                        _a.sent();
-                        return [4 /*yield*/, this.roamState.loadAllGameObjects(loader)];
-                    case 3:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
+                this.evtHandler.addEventListener('player touch', function () { return console.log("touched grass", _this.zIndex); });
+                return [2 /*return*/];
             });
         });
     };
-    GameMap.prototype.getSizeInTiles = function () {
-        return Vector.fromString(this.json.sizeInTiles);
-    };
-    GameMap.prototype.getSizeInPx = function () {
-        return this.getSizeInTiles().prod(this.roamState.tileSize);
-    };
-    GameMap.prototype.loadJSON = function (loader) {
-        return __awaiter(this, void 0, void 0, function () {
-            var url, _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        url = "/json/maps/" + this.name + ".json";
-                        _a = this;
-                        return [4 /*yield*/, loader.loadJSON(url)];
-                    case 1:
-                        _a.json = (_b.sent());
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    GameMap.prototype.populateLayers = function () {
-        for (var i = 0; i < this.json.layers.length; i++) {
-            this.layers.push(new GameMapLayer(this, i));
-        }
-    };
-    return GameMap;
-}());
-export default GameMap;
+    Grass.prototype.getBlockingSquares = function () { return []; };
+    return Grass;
+}(GameObject));
+export default Grass;

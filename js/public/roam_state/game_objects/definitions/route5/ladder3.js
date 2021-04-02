@@ -12,14 +12,12 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 import Vector from "../../../../util/Vector.js";
-import SidewaysLadder from "../../types/SidewaysLadder.js";
-var ladder1 = /** @class */ (function (_super) {
-    __extends(ladder1, _super);
-    function ladder1(roamState) {
-        var _this = _super.call(this, roamState, new Vector(37, 6), new Vector(38, 6), 2, 3) || this;
-        console.log(_this.getTouchableSquares());
-        return _this;
+import Ladder from "../../types/Ladder.js";
+var ladder3 = /** @class */ (function (_super) {
+    __extends(ladder3, _super);
+    function ladder3(roamState) {
+        return _super.call(this, roamState, new Vector(17, 14), new Vector(2), 3, 2) || this;
     }
-    return ladder1;
-}(SidewaysLadder));
-export default ladder1;
+    return ladder3;
+}(Ladder));
+export default ladder3;

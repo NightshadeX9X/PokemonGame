@@ -82,7 +82,7 @@ var RoamState = /** @class */ (function (_super) {
                         ])];
                     case 1:
                         _a.sent();
-                        console.log(this.gameObjects);
+                        console.log("hehe", this.gameObjects);
                         return [2 /*return*/];
                 }
             });
@@ -133,26 +133,30 @@ var RoamState = /** @class */ (function (_super) {
             var files;
             var _this = this;
             return __generator(this, function (_a) {
-                this.gameObjects = [];
-                files = this.gameMap.json.gameObjects.map(function (str) { return str + ".js"; });
-                console.log(files);
-                Promise.all(files.map(function (file) { return __awaiter(_this, void 0, void 0, function () {
-                    var mod, instance;
-                    return __generator(this, function (_a) {
-                        switch (_a.label) {
-                            case 0: return [4 /*yield*/, loader.loadJSDefault("/js/roam_state/game_objects/definitions/" + file)];
-                            case 1:
-                                mod = _a.sent();
-                                instance = new mod(this);
-                                this.gameObjects.push(instance);
-                                return [4 /*yield*/, instance.preload(loader)];
-                            case 2:
-                                _a.sent();
-                                return [2 /*return*/];
-                        }
-                    });
-                }); }));
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0:
+                        files = this.gameMap.json.gameObjects.map(function (str) { return str + ".js"; });
+                        console.log(files);
+                        return [4 /*yield*/, Promise.all(files.map(function (file) { return __awaiter(_this, void 0, void 0, function () {
+                                var mod, instance;
+                                return __generator(this, function (_a) {
+                                    switch (_a.label) {
+                                        case 0: return [4 /*yield*/, loader.loadJSDefault("/js/roam_state/game_objects/definitions/" + file)];
+                                        case 1:
+                                            mod = _a.sent();
+                                            instance = new mod(this);
+                                            this.gameObjects.push(instance);
+                                            return [2 /*return*/];
+                                    }
+                                });
+                            }); }))];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, Promise.all(this.gameObjects.map(function (go) { return go.preload(loader); }))];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
             });
         });
     };

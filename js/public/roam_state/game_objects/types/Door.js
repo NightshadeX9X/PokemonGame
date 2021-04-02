@@ -60,7 +60,7 @@ var Door = /** @class */ (function (_super) {
         _this.spritesheet = null;
         return _this;
     }
-    Door.prototype.getBlockingSquares = function () { return [Vector.from(this.pos)]; };
+    Door.prototype.getBlockingSquares = function () { return [{ squares: [Vector.from(this.pos)], zIndex: this.zIndex }]; };
     Door.prototype.preload = function (loader) {
         return __awaiter(this, void 0, void 0, function () {
             var _a;
@@ -111,14 +111,14 @@ var Door = /** @class */ (function (_super) {
                             amountOfImages: 6,
                             interval: 4
                         });
-                        this.roamState.player.canWalk = false;
+                        this.roamState.player.freeze();
                         return [4 /*yield*/, this.roamState.backgroundProcesses.push(as)];
                     case 1:
                         _a.sent();
                         return [4 /*yield*/, as.waitForRemoval()];
                     case 2:
                         _a.sent();
-                        this.roamState.player.canWalk = true;
+                        this.roamState.player.unfreeze();
                         return [2 /*return*/];
                 }
             });

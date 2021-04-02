@@ -13,7 +13,7 @@ class Door extends GameObject {
 		super(roamState, pos, new Vector(1, 2));
 	}
 
-	public getBlockingSquares() { return [Vector.from(this.pos)] }
+	public getBlockingSquares() { return [{ squares: [Vector.from(this.pos)], zIndex: this.zIndex }] }
 
 	public async preload(loader: Loader) {
 		await GameObject.prototype.preload.call(this, loader);
@@ -39,12 +39,13 @@ class Door extends GameObject {
 				interval: 4
 			});
 
-		this.roamState.player.canWalk = false;
+		this.roamState.player.freeze();
 
 		await this.roamState.backgroundProcesses.push(as);
 		await as.waitForRemoval();
 
-		this.roamState.player.canWalk = true;
+		this.roamState.player.unfreeze();
+
 	}
 
 	public render(ctx: CanvasRenderingContext2D) {

@@ -25,7 +25,7 @@ class RoamState extends State {
 			this.gameMap.preload(loader),
 		]);
 
-		console.log(this.gameObjects);
+		console.log("hehe", this.gameObjects);
 	}
 	public update(input: Input) {
 		this.player.update(input);
@@ -70,15 +70,14 @@ class RoamState extends State {
 	}
 
 	public async loadAllGameObjects(loader: Loader) {
-		this.gameObjects = [];
 		const files = this.gameMap.json.gameObjects.map(str => `${str}.js`);
 		console.log(files)
-		Promise.all(files.map(async file => {
+		await Promise.all(files.map(async file => {
 			const mod = await loader.loadJSDefault<ChildClass<typeof GameObject>>(`/js/roam_state/game_objects/definitions/${file}`);
 			const instance = new mod(this);
 			this.gameObjects.push(instance);
-			await instance.preload(loader)
 		}));
+		await Promise.all(this.gameObjects.map(go => go.preload(loader)));
 	}
 }
 

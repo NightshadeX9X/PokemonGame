@@ -18,7 +18,10 @@ class SidewaysLadder extends GameObject {
 		})
 	}
 	public getBlockingSquares() { return [] }
+	public getTouchableSquares() {
+		return [this.leftZIndex, this.rightZIndex].map(zIndex => ({ squares: [this.left, this.right], zIndex }));
 
+	}
 }
 
 export default SidewaysLadder;

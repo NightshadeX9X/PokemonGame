@@ -2,14 +2,10 @@ import RoamState from "../../../../states/RoamState.js";
 import Vector from "../../../../util/Vector.js";
 import Ladder from "../../types/Ladder.js";
 
-class ladder1 extends Ladder {
+class ladder3 extends Ladder {
 	constructor(roamState: RoamState) {
-		super(roamState, new Vector(3, 19), new Vector(2), 2, 1);
-	}
-
-	async onPlayerTouch() {
-		console.log("ladder")
+		super(roamState, new Vector(17, 14), new Vector(2), 3, 2);
 	}
 }
 
-export default ladder1;
+export default ladder3;

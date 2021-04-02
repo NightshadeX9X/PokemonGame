@@ -15,7 +15,12 @@ class Player extends Character implements Updatable {
 		super(roamState, "player");
 
 		this.evtHandler.addEventListener('walk', (oldPos: Vector, newPos: Vector, direction: Direction) => {
-			const gos = this.roamState.gameObjects.filter(go => go.getTouchableSquares().find(v => v.equals(newPos)));
+			const gos = this.roamState.gameObjects.filter(go => {
+				for (const value of go.getTouchableSquares()) {
+					if (value.zIndex === this.zIndex && value.squares.find(v => v.equals(newPos))) return true;
+				}
+				return false;
+			});
 			gos.forEach(go => go.evtHandler.dispatchEvent('player touch', oldPos, newPos, direction));
 		});
 	}
@@ -28,8 +33,12 @@ class Player extends Character implements Updatable {
 
 		if (input.interactionKey && this.lastInteraction >= 20 && !this.walking) {
 			const posAhead = this.pos.sum(Direction.toVector(this.direction));
-			const gos = this.roamState.gameObjects.filter(go => go.getInteractionSquares().find(v => v.equals(posAhead)));
-			console.log(gos.map(go => go.evtHandler))
+			const gos = this.roamState.gameObjects.filter(go => {
+				for (const value of go.getInteractionSquares()) {
+					if (value.zIndex === this.zIndex && value.squares.find(v => v.equals(posAhead))) return true;
+				}
+				return false;
+			});
 			gos.forEach(go => {
 				go.evtHandler.dispatchEvent('interaction');
 			})
