@@ -13,8 +13,8 @@ class SidewaysLadder extends GameObject {
 		await GameObject.prototype.preload.call(this, loader);
 		this.evtHandler.addEventListener('player touch', (oldPos: Vector, newPos: Vector, direction: Direction) => {
 			console.log(newPos, direction)
-			if (newPos.equals(this.left) && direction === Direction.RIGHT) this.roamState.player.zIndex = this.rightZIndex;
-			if (newPos.equals(this.right) && direction === Direction.LEFT) this.roamState.player.zIndex = this.leftZIndex;
+			if (newPos.equals(this.left)) this.roamState.player.zIndex = this.leftZIndex;
+			if (newPos.equals(this.right)) this.roamState.player.zIndex = this.rightZIndex;
 		})
 	}
 	public getBlockingSquares() { return [] }
@@ -22,6 +22,7 @@ class SidewaysLadder extends GameObject {
 		return [this.leftZIndex, this.rightZIndex].map(zIndex => ({ squares: [this.left, this.right], zIndex }));
 
 	}
+
 }
 
 export default SidewaysLadder;

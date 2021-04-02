@@ -47,7 +47,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import Direction from "../../../util/Direction.js";
 import GameObject from "../GameObject.js";
 var SidewaysLadder = /** @class */ (function (_super) {
     __extends(SidewaysLadder, _super);
@@ -69,10 +68,10 @@ var SidewaysLadder = /** @class */ (function (_super) {
                         _a.sent();
                         this.evtHandler.addEventListener('player touch', function (oldPos, newPos, direction) {
                             console.log(newPos, direction);
-                            if (newPos.equals(_this.left) && direction === Direction.RIGHT)
-                                _this.roamState.player.zIndex = _this.rightZIndex;
-                            if (newPos.equals(_this.right) && direction === Direction.LEFT)
+                            if (newPos.equals(_this.left))
                                 _this.roamState.player.zIndex = _this.leftZIndex;
+                            if (newPos.equals(_this.right))
+                                _this.roamState.player.zIndex = _this.rightZIndex;
                         });
                         return [2 /*return*/];
                 }

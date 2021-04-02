@@ -146,14 +146,14 @@ var RoamState = /** @class */ (function (_super) {
                                             mod = _a.sent();
                                             instance = new mod(this);
                                             this.gameObjects.push(instance);
+                                            return [4 /*yield*/, instance.preload(loader)];
+                                        case 2:
+                                            _a.sent();
                                             return [2 /*return*/];
                                     }
                                 });
                             }); }))];
                     case 1:
-                        _a.sent();
-                        return [4 /*yield*/, Promise.all(this.gameObjects.map(function (go) { return go.preload(loader); }))];
-                    case 2:
                         _a.sent();
                         return [2 /*return*/];
                 }
