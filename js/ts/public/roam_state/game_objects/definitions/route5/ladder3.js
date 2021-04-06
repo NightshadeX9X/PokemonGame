@@ -12,12 +12,12 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 import Vector from "../../../../util/Vector.js";
-import Door from "../../types/Door.js";
-var door1 = /** @class */ (function (_super) {
-    __extends(door1, _super);
-    function door1(roamState) {
-        return _super.call(this, roamState, new Vector(), "door1") || this;
+import Ladder from "../../types/Ladder.js";
+var ladder3 = /** @class */ (function (_super) {
+    __extends(ladder3, _super);
+    function ladder3(roamState) {
+        return _super.call(this, roamState, new Vector(17, 14), new Vector(2), 3, 2) || this;
     }
-    return door1;
-}(Door));
-export default door1;
+    return ladder3;
+}(Ladder));
+export default ladder3;

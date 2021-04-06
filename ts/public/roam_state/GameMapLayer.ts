@@ -63,6 +63,19 @@ class GameMapLayer implements Preloadable, Renderable {
 		const coords = this.gameMap.roamState.camera.convertCoords(new Vector);
 		this.gameMap.roamState.camera.ctx.drawImage(this.image, coords.x, coords.y)
 	}
+
+	public addGrass() {
+		this.parts.forEach((row, y) => {
+			row.forEach((single, x) => {
+				single.forEach(data => {
+					if (data.type === "grass" && data.value !== "") {
+						const g = new Grass(this.gameMap.roamState, new Vector(x, y), this.zIndex + 1)
+						this.gameMap.roamState.gameObjects.push(g)
+					}
+				})
+			})
+		})
+	}
 }
 
 namespace GameMapLayer {

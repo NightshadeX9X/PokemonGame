@@ -46,6 +46,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import Vector from "../util/Vector.js";
+import Grass from "./game_objects/dynamic/Grass.js";
 var GameMapLayer = /** @class */ (function () {
     function GameMapLayer(gameMap, zIndex) {
         this.gameMap = gameMap;
@@ -119,6 +120,19 @@ var GameMapLayer = /** @class */ (function () {
     GameMapLayer.prototype.render = function (ctx) {
         var coords = this.gameMap.roamState.camera.convertCoords(new Vector);
         this.gameMap.roamState.camera.ctx.drawImage(this.image, coords.x, coords.y);
+    };
+    GameMapLayer.prototype.addGrass = function () {
+        var _this = this;
+        this.parts.forEach(function (row, y) {
+            row.forEach(function (single, x) {
+                single.forEach(function (data) {
+                    if (data.type === "grass" && data.value !== "") {
+                        var g = new Grass(_this.gameMap.roamState, new Vector(x, y), _this.zIndex + 1);
+                        _this.gameMap.roamState.gameObjects.push(g);
+                    }
+                });
+            });
+        });
     };
     return GameMapLayer;
 }());

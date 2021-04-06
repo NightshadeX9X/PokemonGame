@@ -47,6 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+import AnimationState from "../../../states/AnimationState.js";
 import Spritesheet from "../../../util/Spritesheet.js";
 import Vector from "../../../util/Vector.js";
 import GameObject from "../GameObject.js";
@@ -59,9 +60,11 @@ var Door = /** @class */ (function (_super) {
         _this.spritesheet = null;
         return _this;
     }
+    Door.prototype.getBlockingSquares = function () { return [{ squares: [Vector.from(this.pos)], zIndex: this.zIndex }]; };
     Door.prototype.preload = function (loader) {
         return __awaiter(this, void 0, void 0, function () {
             var _a;
+            var _this = this;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, GameObject.prototype.preload.call(this, loader)];
@@ -72,13 +75,60 @@ var Door = /** @class */ (function (_super) {
                     case 2:
                         _a.image = _b.sent();
                         this.spritesheet = new Spritesheet(this.image, new Vector(16), new Vector(6, 1));
+                        this.evtHandler.addEventListener('interaction', function () { return __awaiter(_this, void 0, void 0, function () {
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0:
+                                        if (this.pos.y === this.roamState.player.pos.y)
+                                            return [2 /*return*/];
+                                        return [4 /*yield*/, this.open()];
+                                    case 1:
+                                        _a.sent();
+                                        console.log("door opened");
+                                        return [2 /*return*/];
+                                }
+                            });
+                        }); });
+                        this.evtHandler.addEventListener('player touch', function () { return __awaiter(_this, void 0, void 0, function () {
+                            return __generator(this, function (_a) {
+                                console.log("open door");
+                                return [2 /*return*/];
+                            });
+                        }); });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Door.prototype.open = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var as;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        as = new AnimationState(this.roamState.backgroundProcesses, this.spritesheet, {
+                            singleImageSize: new Vector(16),
+                            amountOfImages: 6,
+                            interval: 4
+                        });
+                        this.roamState.player.freeze();
+                        return [4 /*yield*/, this.roamState.backgroundProcesses.push(as)];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, as.waitForRemoval()];
+                    case 2:
+                        _a.sent();
+                        this.roamState.player.unfreeze();
                         return [2 /*return*/];
                 }
             });
         });
     };
     Door.prototype.render = function (ctx) {
-        this.spritesheet.render(ctx, this.pos);
+        if (!this.image || !this.spritesheet)
+            return;
+        var coords = this.roamState.camera.convertCoords(this.pos);
+        this.spritesheet.render(this.roamState.camera.ctx, coords);
     };
     return Door;
 }(GameObject));

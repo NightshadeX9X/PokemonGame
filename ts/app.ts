@@ -17,5 +17,6 @@ app.get('/items', async (req, res) => {
 
 app.use(express.static(`${dirname}/public`));
 app.use('/js', express.static(`${dirname}/js/public`));
+app.use('/UI', express.static(`${dirname}/UI/js`));
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}...`))

@@ -47,18 +47,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import Vector from "../../../util/Vector.js";
 import GameObject from "../GameObject.js";
-var Ladder = /** @class */ (function (_super) {
-    __extends(Ladder, _super);
-    function Ladder(roamState, pos, size, topZIndex, bottomZIndex) {
-        if (size === void 0) { size = new Vector(2); }
-        var _this = _super.call(this, roamState, pos, size) || this;
-        _this.topZIndex = topZIndex;
-        _this.bottomZIndex = bottomZIndex;
+var SidewaysLadder = /** @class */ (function (_super) {
+    __extends(SidewaysLadder, _super);
+    function SidewaysLadder(roamState, left, right, leftZIndex, rightZIndex) {
+        var _this = _super.call(this, roamState, left, right.diff(left).sum(1)) || this;
+        _this.left = left;
+        _this.right = right;
+        _this.leftZIndex = leftZIndex;
+        _this.rightZIndex = rightZIndex;
         return _this;
     }
-    Ladder.prototype.preload = function (loader) {
+    SidewaysLadder.prototype.preload = function (loader) {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
             return __generator(this, function (_a) {
@@ -66,25 +66,23 @@ var Ladder = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, GameObject.prototype.preload.call(this, loader)];
                     case 1:
                         _a.sent();
-                        this.evtHandler.addEventListener('player touch', function (oldPos, newPos) {
-                            var top = _this.pos.y;
-                            var bottom = _this.pos.y + _this.size.y - 1;
-                            if (newPos.y === top)
-                                _this.roamState.player.zIndex = _this.topZIndex;
-                            if (newPos.y === bottom)
-                                _this.roamState.player.zIndex = _this.bottomZIndex;
-                            console.log(_this.roamState.player.zIndex);
+                        this.evtHandler.addEventListener('player touch', function (oldPos, newPos, direction) {
+                            console.log(newPos, direction);
+                            if (newPos.equals(_this.left))
+                                _this.roamState.player.zIndex = _this.leftZIndex;
+                            if (newPos.equals(_this.right))
+                                _this.roamState.player.zIndex = _this.rightZIndex;
                         });
                         return [2 /*return*/];
                 }
             });
         });
     };
-    Ladder.prototype.getBlockingSquares = function () { return []; };
-    Ladder.prototype.getTouchableSquares = function () {
+    SidewaysLadder.prototype.getBlockingSquares = function () { return []; };
+    SidewaysLadder.prototype.getTouchableSquares = function () {
         var _this = this;
-        return [this.topZIndex, this.bottomZIndex].map(function (zIndex) { return ({ squares: _this.pos.rangeTo(_this.pos.sum(_this.size)), zIndex: zIndex }); });
+        return [this.leftZIndex, this.rightZIndex].map(function (zIndex) { return ({ squares: [_this.left, _this.right], zIndex: zIndex }); });
     };
-    return Ladder;
+    return SidewaysLadder;
 }(GameObject));
-export default Ladder;
+export default SidewaysLadder;

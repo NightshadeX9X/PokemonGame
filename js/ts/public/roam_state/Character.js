@@ -55,6 +55,7 @@ var Character = /** @class */ (function () {
         this.imageName = imageName;
         this.walking = false;
         this.canWalk = true;
+        this.canTurn = true;
         this.canWalkOutOfBounds = false;
         this.canWalkThroughWalls = false;
         this.evtHandler = new Events.Handler();
@@ -66,10 +67,14 @@ var Character = /** @class */ (function () {
         this[_a] = true;
         this.direction = Direction.DOWN;
     }
+    Character.prototype.freeze = function () { this.canWalk = false; this.canTurn = false; };
+    Character.prototype.unfreeze = function () { this.canWalk = true; this.canTurn = true; };
     Character.isCharacter = function (c) {
         return c[SIGNATURE] === true;
     };
     Character.prototype.setDirection = function (d) {
+        if (!this.canTurn)
+            return;
         this.direction = d;
         this.updateSpritesheetFromDirection(d);
     };
@@ -182,6 +187,8 @@ var Character = /** @class */ (function () {
         var mapSize = this.roamState.gameMap.getSizeInTiles();
         if (!this.canWalk || this.walking)
             return false;
+        if (this.roamState.stateStack.game.isCheatMode())
+            return true;
         if (!this.canWalkOutOfBounds) {
             if (toPos.x < 0 || toPos.y < 0 || toPos.x >= mapSize.x || toPos.y >= mapSize.y)
                 return false;
@@ -208,6 +215,10 @@ var Character = /** @class */ (function () {
                 if (coveredByC.some(function (v) { return v.equals(toPos); }))
                     return false;
             }
+        }
+        {
+            if (this.roamState.gameObjects.some(function (go) { return go.getBlockingSquares().find(function (d) { return d.squares.find(function (v) { return v.equals(toPos); }) && d.zIndex === _this.zIndex; }); }))
+                return false;
         }
         return true;
     };

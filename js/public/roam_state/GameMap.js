@@ -54,9 +54,6 @@ var GameMap = /** @class */ (function () {
                         return [4 /*yield*/, Promise.all(this.layers.map(function (layer) { return layer.preload(loader); }))];
                     case 2:
                         _a.sent();
-                        return [4 /*yield*/, this.roamState.loadAllGameObjects(loader)];
-                    case 3:
-                        _a.sent();
                         return [2 /*return*/];
                 }
             });

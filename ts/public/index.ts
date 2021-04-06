@@ -1,5 +1,5 @@
-import './BattleTesting.js';
 import Game from './core/Game.js';
+import '/UI/UI.js';
 const game = new Game();
 
 async function preload() {

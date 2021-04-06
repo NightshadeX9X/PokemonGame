@@ -56,4 +56,5 @@ app.get('/items', function (req, res) { return __awaiter(void 0, void 0, void 0,
 }); });
 app.use(express.static(dirname + "/public"));
 app.use('/js', express.static(dirname + "/js/public"));
+app.use('/UI', express.static(dirname + "/UI/js"));
 app.listen(PORT, function () { return console.log("Server started on port " + PORT + "..."); });

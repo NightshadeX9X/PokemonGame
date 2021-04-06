@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,31 +34,44 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+export default function callRelatedEffectFns(_state, related) {
+    return __awaiter(this, void 0, void 0, function () {
+        var state, _i, related_1, r;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    state = _state;
+                    _i = 0, related_1 = related;
+                    _a.label = 1;
+                case 1:
+                    if (!(_i < related_1.length)) return [3 /*break*/, 4];
+                    r = related_1[_i];
+                    return [4 /*yield*/, r.effect(state)];
+                case 2:
+                    state = _a.sent();
+                    _a.label = 3;
+                case 3:
+                    _i++;
+                    return [3 /*break*/, 1];
+                case 4: return [2 /*return*/, state];
+            }
+        });
+    });
+}
 var Ability = /** @class */ (function () {
-    function Ability(name, owner) {
+    function Ability(name, powerup) {
+        if (powerup === void 0) { powerup = Ability.Powerup.NONE; }
         this.name = name;
-        this.owner = owner;
-        this.powerup = Ability.Powerup.NONE;
+        this.powerup = powerup;
     }
     Ability.prototype.effect = function (state) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 if (state.type === "attack") {
-                    if (state.attacker === this.owner) {
-                        if (this.powerup === Ability.Powerup.DOUBLE_DAMAGE) {
-                            state.damageModifiers.push(2);
-                        }
-                        else if (this.powerup === Ability.Powerup.HALF_DAMAGE) {
-                            state.damageModifiers.push(0.5);
-                        }
-                    }
-                }
-                else if (state.type === "switch") {
-                    if (state.switcher === this.owner) {
-                        if (this.powerup === Ability.Powerup.CANNOT_SWITCH) {
-                            state.allowed = false;
-                        }
-                    }
+                    if (this.powerup === Ability.Powerup.DOUBLE_DAMAGE)
+                        state.damage *= 2;
+                    if (this.powerup === Ability.Powerup.HALF_DAMAGE)
+                        state.damage *= 0.5;
                 }
                 return [2 /*return*/, state];
             });
@@ -75,77 +87,49 @@ var Ability = /** @class */ (function () {
         Powerup[Powerup["CANNOT_SWITCH"] = 2] = "CANNOT_SWITCH";
         Powerup[Powerup["NONE"] = 3] = "NONE";
     })(Powerup = Ability.Powerup || (Ability.Powerup = {}));
+    var Types;
+    (function (Types) {
+        Types.HUGE_POWER = new Ability('huge power', Ability.Powerup.DOUBLE_DAMAGE);
+        Types.NONE = new Ability('none', Ability.Powerup.NONE);
+    })(Types = Ability.Types || (Ability.Types = {}));
 })(Ability || (Ability = {}));
 var Creature = /** @class */ (function () {
     function Creature(name, hp) {
         if (hp === void 0) { hp = 100; }
         this.name = name;
         this.hp = hp;
-        this.ability = new Ability("huge power", this);
     }
     Creature.prototype.effect = function (state) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                if (state.type === "attack" && state.defender === this && this.name === "rowlet")
-                    state.nullified = true;
-                return [2 /*return*/, state];
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, callRelatedEffectFns(state, [state.attack, this.ability, state.defender])];
+                    case 1:
+                        state = _a.sent();
+                        return [2 /*return*/, state];
+                }
             });
         });
     };
     Creature.prototype.useAttack = function (attack, defender) {
         return __awaiter(this, void 0, void 0, function () {
-            var state, effectFunctionHolders, effectFunctions, _i, effectFunctions_1, fn, multiplier;
+            var state;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        state = { type: 'attack', attacker: this, attack: attack, defender: defender, damageModifiers: [], nullified: false };
-                        effectFunctionHolders = [this, attack, defender, this.ability,];
-                        effectFunctions = effectFunctionHolders.map(function (efh) { return efh.effect.bind(efh); });
-                        _i = 0, effectFunctions_1 = effectFunctions;
-                        _a.label = 1;
+                        state = {
+                            type: 'attack',
+                            attack: attack,
+                            attacker: this,
+                            defender: defender,
+                            damage: 0,
+                            nullified: false,
+                        };
+                        return [4 /*yield*/, this.effect(state)];
                     case 1:
-                        if (!(_i < effectFunctions_1.length)) return [3 /*break*/, 4];
-                        fn = effectFunctions_1[_i];
-                        return [4 /*yield*/, fn(state)];
-                    case 2:
                         state = _a.sent();
-                        _a.label = 3;
-                    case 3:
-                        _i++;
-                        return [3 /*break*/, 1];
-                    case 4:
-                        multiplier = state.damageModifiers.reduce(function (acc, curr) { return acc * curr; }, 1);
-                        if (!state.nullified)
-                            defender.hp -= attack.damage * multiplier;
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    Creature.prototype.switchOut = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var state, effectFunctionHolders, effectFunctions, _i, effectFunctions_2, fn;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        state = { type: 'switch', switcher: this, replacement: this, allowed: true };
-                        effectFunctionHolders = [this, this.ability];
-                        effectFunctions = effectFunctionHolders.map(function (efh) { return efh.effect.bind(efh); });
-                        _i = 0, effectFunctions_2 = effectFunctions;
-                        _a.label = 1;
-                    case 1:
-                        if (!(_i < effectFunctions_2.length)) return [3 /*break*/, 4];
-                        fn = effectFunctions_2[_i];
-                        return [4 /*yield*/, fn(state)];
-                    case 2:
-                        state = _a.sent();
-                        _a.label = 3;
-                    case 3:
-                        _i++;
-                        return [3 /*break*/, 1];
-                    case 4:
-                        if (state.allowed)
-                            console.log(this.name + " switched out!");
+                        console.log("Damage:", state.damage);
+                        console.log("Nullified:", state.nullified);
                         return [2 /*return*/];
                 }
             });
@@ -162,14 +146,20 @@ var Attack = /** @class */ (function () {
     Attack.prototype.effect = function (state) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
+                if (state.type === "attack") {
+                    state.damage = this.damage;
+                }
                 return [2 /*return*/, state];
             });
         });
     };
     return Attack;
 }());
-var rowlet = new Creature('rowlet');
-rowlet.ability.powerup = Ability.Powerup.CANNOT_SWITCH;
-var popplio = new Creature('popplio');
 var leafage = new Attack('leafage', 40);
-console.log(rowlet.hp);
+var rowlet = new Creature('rowlet');
+rowlet.ability = Ability.Types.HUGE_POWER;
+var popplio = new Creature('rowlet');
+popplio.ability = Ability.Types.NONE;
+rowlet.useAttack(leafage, popplio).then(function () {
+    console.log(popplio.hp);
+});
